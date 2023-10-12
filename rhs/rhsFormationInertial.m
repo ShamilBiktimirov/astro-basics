@@ -12,6 +12,7 @@ function rvPrime = rhsFormationInertial(t, rv, controlVector, spacecraft)
     % 'atmosphericDragAndLift'      - central gravity + atmo drag and lift force
     % 'atmosphericDrag'             - central gravity + atmo drag
     % 'J2'                          - central gravity + J2 effect
+    % 'J2 + atmosphericDrag'        - J2 effect + atmospheric drag
     % 'J2 + atmosphericDragAndLift' - central gravity + J2 effect + atmo drag and lift force
 
     global environment
@@ -33,14 +34,15 @@ function rvPrime = rhsFormationInertial(t, rv, controlVector, spacecraft)
 
             perturbations = zeros(6, nSats);
 
-        case 'J2'
+            case 'J2'
 
             accelerationJ2  = [zeros(3, nSats); ...
                                j2PerturbationAcceleration(rv)];
 
             perturbations = accelerationJ2;
 
-         case 'atmosphericDrag'
+        case 'atmosphericDrag'
+
             % проверить векторизацию
             vRelativeECI = rv(4:6,:) - cross(ones(1, nSats) .* Consts.wEarth, rv(1:3,:));
             rhoAtmo = CIRA72(vecnorm(rv(1:3,:)) - Consts.rEarth);
@@ -51,7 +53,23 @@ function rvPrime = rhsFormationInertial(t, rv, controlVector, spacecraft)
 
             perturbations = accelerationAtmosphericDrag;
 
-       case 'atmosphericDragAndLift'
+        case 'J2 + atmosphericDrag'
+
+            % проверить векторизацию
+            vRelativeECI = rv(4:6,:) - cross(ones(1, nSats) .* Consts.wEarth, rv(1:3,:));
+            rhoAtmo = CIRA72(vecnorm(rv(1:3,:)) - Consts.rEarth);
+            accelerationAtmosphericDrag = - 0.5 * spacecraft.Cdrag * spacecraft.dragArea / ...
+                                            spacecraft.mass * rhoAtmo .* vRelativeECI .* vecnorm(vRelativeECI);
+
+            accelerationAtmosphericDrag = [zeros(3, nSats); accelerationAtmosphericDrag];
+
+            accelerationJ2  = [zeros(3, nSats); ...
+                               j2PerturbationAcceleration(rv)];
+
+            perturbations = accelerationAtmosphericDrag + accelerationJ2;
+
+
+        case 'atmosphericDragAndLift'
 
             accelerationAdl = [zeros(3, nSats); ...
                                atmosphericDragAndLiftAcceleration(rv, spacecraft.anglesRequired, spacecraft)];
