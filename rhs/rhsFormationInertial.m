@@ -43,7 +43,7 @@ function rvPrime = rhsFormationInertial(t, rv, controlVector, spacecraft)
 
         case 'atmosphericDrag'
 
-            % проверить векторизацию
+            % check vectorization
             vRelativeECI = rv(4:6,:) - cross(ones(1, nSats) .* Consts.wEarth, rv(1:3,:));
             rhoAtmo = CIRA72(vecnorm(rv(1:3,:)) - Consts.rEarth);
             accelerationAtmosphericDrag = - 0.5 * spacecraft.Cdrag * spacecraft.dragArea / ...
@@ -55,7 +55,7 @@ function rvPrime = rhsFormationInertial(t, rv, controlVector, spacecraft)
 
         case 'J2 + atmosphericDrag'
 
-            % проверить векторизацию
+            % check vectorization
             vRelativeECI = rv(4:6,:) - cross(ones(1, nSats) .* Consts.wEarth, rv(1:3,:));
             rhoAtmo = CIRA72(vecnorm(rv(1:3,:)) - Consts.rEarth);
             accelerationAtmosphericDrag = - 0.5 * spacecraft.Cdrag * spacecraft.dragArea / ...
