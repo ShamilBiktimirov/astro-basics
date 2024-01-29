@@ -24,7 +24,7 @@ classdef Consts
         karmanLineHeight          = 100e3;                                  % Karman line - end of life altitude, m
         sunlightIntensity         = 1370;                                   % Sunlight intensity at Earth orbit, W/m^2
         earthMagneticField        = 7.812e15;                               % Average Earth magnetic field dipole strength[W*b/m]
-        goldenRation              = (1 + sqrt(5)) / 2                       % golden ratio, []
+        goldenRatio               = (1 + sqrt(5)) / 2                       % golden ratio, []
 
     end
 
