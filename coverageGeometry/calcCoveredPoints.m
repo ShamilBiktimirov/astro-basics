@@ -11,7 +11,7 @@ function coveredPoints = calcCoveredPoints(rSat, rPOI, betaAngle)
     % Output:
     % coveredPoints [m, 1] - logical vector of covered points
 
-    ePoiArray  = rPOI;
+    ePoiArray  = rPOI ./ vecnorm(rPOI);
 
     eSat = rSat ./ repmat(vecnorm(rSat, 2, 1), [3, 1]);
     eSat = reshape(eSat, [size(eSat, 1), 1, size(eSat, 2)]);

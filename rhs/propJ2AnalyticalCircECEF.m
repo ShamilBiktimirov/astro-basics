@@ -1,4 +1,4 @@
-function rv = propJ2AnalyticalCircECEF(oe, JD)
+function rv = propJ2AnalyticalCircECEF(oe, JD0, JD)
 
     % Input
     % mean orbital elements, oe = [a; e; i; RAAN; AOP; MA]
@@ -24,11 +24,11 @@ function rv = propJ2AnalyticalCircECEF(oe, JD)
 
     n = sqrt(Consts.muEarth/ a0^3);
 
-    t = (JD - JD(1)) * Consts.day2sec;
+    t = (JD - JD0) * Consts.day2sec;
 
     GST = JD2GMST(JD) * pi / 180;
 
-    argOfLat = AOP0 + AOPprecessionRate * t + MA0 + MApressionRate*t + n * t;
+    argOfLat = AOP0 + AOPprecessionRate * t + MA0 + MApressionRate * t + n * t;
     RAAN     = RAAN0 + RAANprecessionRate * t;
 
 
@@ -61,7 +61,7 @@ function rv = propJ2AnalyticalCircECEF(oe, JD)
                    sin(argOfLat); ...
                    zeros(1, length(t))];
 
-    M3(:, 2, :) = [sin(argOfLat); ...
+    M3(:, 2, :) = [-sin(argOfLat); ...
                    cos(argOfLat); ...
                    zeros(1, length(t))];
 
