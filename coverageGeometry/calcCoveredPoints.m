@@ -19,23 +19,23 @@ function coveredPoints = calcCoveredPoints(rSat, rPOI, betaAngle)
     ePoiArray3D = repmat(ePoiArray, [1, 1, size(eSat, 3)]);
     eSatArray3D = repmat(eSat, [1, size(rPOI, 2), 1]);
 
-    coveredPointsMatrix = squeeze(dot(ePoiArray3D, eSatArray3D, 1)) >= cos(betaAngle);
+    coveredPoints = any(squeeze(dot(ePoiArray3D, eSatArray3D, 1)) >= cos(betaAngle), 2);
 
-    if min(size(coveredPointsMatrix)) ~= 1
-
-        coveredPoints       = any(coveredPointsMatrix, 2);
-
-        if ~iscolumn(coveredPoints)
-            coveredPoints = coveredPoints';
-        end
-
-    else
-        coveredPoints = coveredPointsMatrix;
-
-        if ~iscolumn(coveredPointsMatrix)
-            coveredPointsMatrix = coveredPointsMatrix';
-        end
-
-    end
+    % if min(size(coveredPointsMatrix)) ~= 1
+    % 
+    %     coveredPoints       = any(coveredPointsMatrix, 2);
+    % 
+    %     if ~iscolumn(coveredPoints)
+    %         coveredPoints = coveredPoints';
+    %     end
+    % 
+    % else
+    %     coveredPoints = coveredPointsMatrix;
+    % 
+    %     if ~iscolumn(coveredPointsMatrix)
+    %         coveredPointsMatrix = coveredPointsMatrix';
+    %     end
+    % 
+    % end
 
 end
