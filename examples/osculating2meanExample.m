@@ -5,23 +5,26 @@ global environment;
 environment = 'J2';
 options = odeset('RelTol',1e-12,'AbsTol',1e-12);
 spacecraft = [];
-% spacecraft parameters
 
-oeOsc0 = [Consts.rEarth + 500e3; 0; 40 * pi / 180;  pi/2; 0; pi/4]; % define mean orbital elements set
+oeMean0 = [Consts.rEarth + 500e3; 0.0001; 40 * pi / 180;  pi/2; 0; 0]; % define mean orbital elements set
 
-% oeOsc0 = mean2osc(oeMean0); % finds corresponding set of osculating orbital elements;
+oeOsc0 = meanOscMapping(oeMean0, 'mean2osc'); % finds corresponding set of osculating orbital elements;
 
 rv0 = oe2rv(oeOsc0); % finds corresponding initial cartesian state vector
 
-orbitPeriod = 2 * pi * sqrt(oeOsc0(1)^3 / Consts.muEarth); % orbit period
+orbitPeriod = 2 * pi * sqrt(oeMean0(1)^3 / Consts.muEarth); % orbit period
 
-[tArray, rvEciArray] = ode45(@(t, rv) rhsFormationInertial(t, rv, [], spacecraft), [0:orbitPeriod], rv0, options);
+[tArray, rvEciArray] = ode45(@(t, rv) rhsFormationInertial(t, rv, [], spacecraft), [0:1:orbitPeriod], rv0, options);
 rvEciArray = rvEciArray';
+
+figure;
+plot3(rvEciArray(1, :), rvEciArray(2, :), rvEciArray(3, :));
+axis equal;
 
 for timeIdx = 1:length(tArray)
 
     oeOscArray(:, timeIdx) = rv2oe(rvEciArray(:, timeIdx));
-    oeMeanArray(:, timeIdx) = osc2mean(oeOscArray(1:6, timeIdx));
+    oeMeanArray(:, timeIdx) = meanOscMapping(oeOscArray(1:6, timeIdx), 'osc2mean');
 
 end
 
