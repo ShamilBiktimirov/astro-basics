@@ -35,6 +35,10 @@ function oeOut = meanOscMapping(oeIn, direction)
 
         gamma2 = Consts.earthJ2 / 2 * (Consts.rEarthEquatorial / a)^2;
 
+    else
+
+        error("Improper osc to mean conversion specified");
+
     end
 
     eta = sqrt(1 - e^2);
