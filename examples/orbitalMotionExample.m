@@ -1,3 +1,5 @@
+clear all;
+
 global environment
 
 environment = 'point mass';
