@@ -11,7 +11,7 @@ wE = [0 0 Consts.wEarth]';
 
 wE_norm = Consts.wEarth;
 
-theta = wE_norm*(JD-2451545.5)*(24*3600);
+theta = wE_norm*(JD-2451545)*(24*3600);
 
 Q = [cos(theta)  sin(theta)  0;
      -sin(theta) cos(theta)  0;
