@@ -1,7 +1,7 @@
 function ap = ThirdBodyPertubation(rv, JD, Consts, R3, mu3)
 
 wE    = Consts.wEarth;
-theta = wE*(JD-2451545.5)*(24*3600);
+theta = wE*(JD-2451545)*(24*3600);
 
 %Transformation matrix
 Q = [cos(theta)  sin(theta)  0;
