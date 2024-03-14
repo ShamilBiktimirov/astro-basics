@@ -33,11 +33,8 @@ coe0 = [h0;e0;RA0;i0;w0;TA0];
 
 [r0, v0] = sv_from_coe(coe0,mu);
 
-degree = 5;
-order = 5;
-
 t0 = 0;
-tf = 2*24*3600;
+tf = 2*24*3600; %2days
 nout = 2000; %Number of solution points to output for plotting purposes
 tspan = linspace(t0, tf, nout);
 options = odeset(...
@@ -100,7 +97,8 @@ grid on
 grid minor
 axis tight
 
-AA = xlsread("GMAT_JGM2_MSISE90_SRP_Lunar_Solar.xlsx");
+%AA = xlsread("GMAT_JGM2_MSISE90_SRP_Lunar_Solar.xlsx");
+AA = xlsread("GMAT_JGM2_MSISE90.xlsx");
 tt   = AA(:,1);
 RAAN = AA(:,2);
 SMA  = AA(:,3);
@@ -231,14 +229,16 @@ rv = [x y z vx vy vz];
 R_Moon = lunar_position(JD, Consts); %Calculate lunar position with respect to the Earth at epoch JD
 
 %Pertubations
-p_aspherical   = EarthGravity(rv, Consts, input);
-p_drag         = AtmosphericDrag(rv, Consts, spacecraft);
+p_aspherical   = EarthGravity(rv, JD, Consts, input);
+p_drag         = AtmosphericDrag(rv, JD, Consts, spacecraft);
 p_SRP          = SolarRadiationPressure(rv, Consts, spacecraft, JD);
-p_SolarGravity = ThirdBodyPertubation(rv,R_Sun,mu_Sun);
-p_LunarGravity = ThirdBodyPertubation(rv,R_Moon,mu_Moon);
+p_SolarGravity = ThirdBodyPertubation(rv, JD, Consts,R_Sun,mu_Sun);
+p_LunarGravity = ThirdBodyPertubation(rv, JD, Consts, R_Moon,mu_Moon);
 
 %Total pertubation acceleration
+%p_total = p_aspherical + p_drag + p_SolarGravity + p_LunarGravity;
 p_total = p_aspherical + p_drag + p_SRP + p_SolarGravity + p_LunarGravity;
+%p_total = p_aspherical + p_drag;
 
 r2 = x*x + y*y + z*z;
 r  = sqrt(r2);

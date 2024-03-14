@@ -1,8 +1,9 @@
-function ap = EarthGravity(rv, Consts, input)
+function ap = EarthGravity(rv, JD, Consts, input)
 
 %Get constants and user inputs
 mu    = Consts.muEarth;
 R     = Consts.rEarthEquatorial;
+wE    = Consts.wEarth;
 degree = input.degree;
 order = input.order;
 
@@ -10,17 +11,27 @@ order = input.order;
     error('Order cannot be larger than degree')
  end
 
-%
-x = rv(1);
-y = rv(2);
-z = rv(3);
+%Convert into Earth-fixed (rotating) frame (cosidering earth rotation only)
+theta = wE*(JD-2451545.5)*(24*3600);
 
-r = norm(rv(1:3));
+%Transformation matrix
+Q = [cos(theta)  sin(theta)  0;
+     -sin(theta) cos(theta)  0;
+     0           0           1];
+
+r_bf  = Q*rv(1:3)';
+
+x = r_bf(1);
+y = r_bf(2);
+z = r_bf(3);
+
+r = norm(r_bf);
 C = zeros(5,5);
 S = zeros(5,5);
 
+
 %EGM-01 coefficients from Vallado (TableS D-1 and D-2)
-%C(2,1:3) = [-0.001082626724393, -2.66739475237484E-10,  1.57461532572292E-06];
+% C(2,1:3) = [-0.001082626724393, -2.66739475237484E-10,  1.57461532572292E-06];
 % S(2,1:3) = [0                    ,  1.78727064852404E-09, -9.03872789196567E-07];
 % 
 % C(3,1:4) = [2.53241051856772E-06 ,  2.19314963131333E-06,  3.09043900391649E-07, 1.00583513408823E-07];
@@ -84,7 +95,10 @@ a2 = dUdlambda/(x*x + y*y);
 ax = a1*x - a2*y;
 ay = a1*y + a2*x;
 az = dUdr*z/r + sqrt(x*x + y*y)*dUdpsi/(r*r);
-ap = [ax ay az]';
+ap_bf = [ax ay az]'; %Peturbation accelaration in body-axis coordinate frame
+
+%Convert into inertial frame
+ap = Q'*ap_bf;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----Alternative method----
@@ -95,5 +109,5 @@ ap = [ax ay az]';
 % dlambdadrvec = (1/(rp*rp))*(x*[0 1 0]' - y*[1 0 0]');
 % 
 % %Perturbing acceleration
-% ap = [dUdr*drdrvec + dUdpsi*dpsidrvec + dUdlambda*dlambdadrvec]'
+% ap_bf = [dUdr*drdrvec + dUdpsi*dpsidrvec + dUdlambda*dlambdadrvec]'
 
