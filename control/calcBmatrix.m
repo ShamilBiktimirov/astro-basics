@@ -1,4 +1,4 @@
-function B = calcBmatrix()
+function B = calcBmatrix(oe)
 
     % Function calculates control influence matrix B for a set of classical
     % orbital elements based on Gauss variational equations
@@ -40,6 +40,6 @@ function B = calcBmatrix()
 
     B(6, :) = [eta * (p * cos(f) - 2 * r * e) / h / e, - eta * (p + r) * sin(f) / h / e, 0];
 
-    B = [B(:, 2:3), B(:, 1)]; 
-    
+    B = [B(:, 2:3), B(:, 1)];
+
 end
