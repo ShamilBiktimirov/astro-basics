@@ -33,6 +33,28 @@ coe0 = [h0;e0;RA0;i0;w0;TA0];
 
 [r0, v0] = sv_from_coe(coe0,mu);
 
+opts = detectImportOptions('EGM08_to150_ZeroTide.txt');
+opts.SelectedVariableNames = {'Var3','Var4'};
+opts.DataLines = [2 65341];
+A = readmatrix('EGM08_to150_ZeroTide.txt',opts);
+
+degree = input.degree;
+
+C = zeros(degree,degree+1);
+S = zeros(degree,degree+1);
+
+temp = 1;
+for i = 1:degree
+    for j = 1:i+1
+        C(i,j) = A(temp,1);
+        S(i,j) = A(temp,2);
+        temp = temp + 1;
+    end
+end
+
+input.C = C;
+input.S = S;
+
 t0 = 0;
 tf = 2*24*3600; %2days
 nout = 2000; %Number of solution points to output for plotting purposes
@@ -97,8 +119,9 @@ grid on
 grid minor
 axis tight
 
-%AA = xlsread("GMAT_JGM2_MSISE90_SRP_Lunar_Solar.xlsx");
-AA = xlsread("GMAT_JGM2_MSISE90.xlsx");
+AA = xlsread("GMAT_5by5_EGM96_MSISE90_SRP_Lunar_Solar.xlsx");
+%AA = xlsread("GMAT_JGM2_MSISE90.xlsx");
+%AA  = xlsread('GMAT_5by5_EGM.xlsx');
 tt   = AA(:,1);
 RAAN = AA(:,2);
 SMA  = AA(:,3);
@@ -210,7 +233,6 @@ grid on
 
 function fdot = pert_sv(t,f, Consts, input, spacecraft)
 
-mu      = Consts.muEarth;
 mu_Sun  = Consts.muSun;
 mu_Moon = Consts.muMoon;
 
@@ -232,25 +254,28 @@ R_Moon = lunar_position(JD, Consts); %Calculate lunar position with respect to t
 p_aspherical   = EarthGravity(rv, JD, Consts, input);
 p_drag         = AtmosphericDrag(rv, JD, Consts, spacecraft);
 p_SRP          = SolarRadiationPressure(rv, Consts, spacecraft, JD);
-p_SolarGravity = ThirdBodyPertubation(rv, JD, Consts,R_Sun,mu_Sun);
-p_LunarGravity = ThirdBodyPertubation(rv, JD, Consts, R_Moon,mu_Moon);
+p_SolarGravity = ThirdBodyPertubation(rv, JD, Consts, R_Sun, mu_Sun);
+p_LunarGravity = ThirdBodyPertubation(rv, JD, Consts, R_Moon, mu_Moon);
 
 %Total pertubation acceleration
 %p_total = p_aspherical + p_drag + p_SolarGravity + p_LunarGravity;
 p_total = p_aspherical + p_drag + p_SRP + p_SolarGravity + p_LunarGravity;
-%p_total = p_aspherical + p_drag;
+%p_total = p_aspherical;
 
-r2 = x*x + y*y + z*z;
-r  = sqrt(r2);
-r3 = r*r2;
+% r2 = x*x + y*y + z*z;
+% r  = sqrt(r2);
+% r3 = r*r2;
 % % 
 
 dxdt  = vx;
 dydt  = vy;
 dzdt  = vz;
-dvxdt = -mu*x/r3 + p_total(1);
-dvydt = -mu*y/r3 + p_total(2);
-dvzdt = -mu*z/r3 + p_total(3);
+% dvxdt = -mu*x/r3 + p_total(1);
+% dvydt = -mu*y/r3 + p_total(2);
+% dvzdt = -mu*z/r3 + p_total(3);
+dvxdt =  p_total(1);
+dvydt =  p_total(2);
+dvzdt =  p_total(3);
 
 fdot =  [dxdt dydt dzdt dvxdt dvydt dvzdt]';
 
