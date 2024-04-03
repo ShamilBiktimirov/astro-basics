@@ -85,7 +85,7 @@ function dOE = rvorb2dOE(rv, OEc)
     
     
     % calculate orbital elements difference 
-    dOE = A_I * rv;
+    dOE = A_I * rvRVH;
 
     function [vr, vt, p, h] = calc_vr_vt(oe)
 
