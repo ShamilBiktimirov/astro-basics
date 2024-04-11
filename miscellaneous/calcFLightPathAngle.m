@@ -16,6 +16,6 @@ function gamma = calcFLightPathAngle(r, v)
     eH = cross(eR, eV) ./ norm(cross(eR, eV));
     eT = cross(eH, eR);
 
-    gamma = acos(dot(eV, eT));
+    gamma = sign(dot(r, v)) * acos(norm(cross(r, v)) / norm(r) / norm(v));
 
 end
