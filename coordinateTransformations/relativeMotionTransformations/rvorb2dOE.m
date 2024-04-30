@@ -1,13 +1,14 @@
 function dOE = rvorb2dOE(rv, OEc)
 
-    % this function convert relative state vector from chief to deputy satelite to difference in orbital elements:
+    
+    % this function converts relative state vector from chief to deputy satelite to difference in orbital elements:
     % this works with any chief eccentricity
     % [a, theta, inc, q1, q2, RAAN]
 
 
     % inputs: 
-    % rv: relative state vector, [km]
-    % OEc: chief orbital elements: [a, e, inc, RAAN, w, f] [km, rad]
+    % rv: relative state vector, [m] orbVHR
+    % OEc: chief orbital elements: [a, e, inc, RAAN, w, f] [m, rad]
     % f is true anomaly
 
     % output:
@@ -17,8 +18,8 @@ function dOE = rvorb2dOE(rv, OEc)
     % reference:
     % ANALYTICAL MECHANICs of AEROSPACE SYSTEMS by Hanspeter Schaub SPACECRAFT FORMATION FLYING chapter
 
-
-
+    
+    rvRVH = orbVHR2RVH(rv);
     a = OEc(1);
     theta = OEc(5) + OEc(6);
     inc = OEc(3);
@@ -84,7 +85,7 @@ function dOE = rvorb2dOE(rv, OEc)
     
     
     % calculate orbital elements difference 
-    dOE = A_I * rv;
+    dOE = A_I * rvRVH;
 
     function [vr, vt, p, h] = calc_vr_vt(oe)
 
