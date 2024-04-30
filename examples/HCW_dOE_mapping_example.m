@@ -44,7 +44,7 @@ for i = 1:length(Theta)
     dM = c4/OEc(1);
     OEc(6) = Theta(i);
     dOE = [da; de; di; 0; 0; dM]; %[da, de, di, dRAAN, domega, dM]
-    rvOrbdOE(:, i) = NearCircdOE2rvorb(dOE, OEc);
+    rvOrbdOE(:, i) = nearCircdOE2rvorb(dOE, OEc);
 end
 
 figure
