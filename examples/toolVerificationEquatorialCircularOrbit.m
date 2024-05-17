@@ -1,5 +1,5 @@
 
-%%% This script shows the Tool validation example for an equatorial-circular orbit
+% This script shows the Tool validation example for an equatorial-circular orbit
 
 clear all
 clc
