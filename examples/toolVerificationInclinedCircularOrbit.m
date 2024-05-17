@@ -1,5 +1,5 @@
 
-%%% This script shows the Tool validation example for an inclined-circular orbit
+% This script shows the Tool validation example for an inclined-circular orbit
 
 clear all
 clc
