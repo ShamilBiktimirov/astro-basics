@@ -26,7 +26,7 @@ epochGD = datetime(2023, 9, 5, 0, 0, 0);
 epochJD = juliandate(epochGD);
 epochGMST = JD2GMST(epochJD);
 
-% try to find JD that will make ECEF frame coincide with ECI frame at t0
+% finds JD that will make ECEF frame coincide with ECI frame at t0
 deltaTheta = 360 - epochGMST;
 deltaTime = deg2rad(deltaTheta) / Consts.omegaEarth;
 
