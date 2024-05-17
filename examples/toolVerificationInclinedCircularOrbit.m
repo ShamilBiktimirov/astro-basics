@@ -32,7 +32,7 @@ deltaTime = deg2rad(deltaTheta) / Consts.omegaEarth;
 newEpoch = epochJD + deltaTime / Consts.day2sec;
 % thetaCheck = JD2GMST(newEpoch)
 
-T = 2*pi*sqrt(a^3/ Consts.muEarth);
+T = 2 * pi * sqrt(a ^ 3 / Consts.muEarth);
 tArray = 0:0.01:T;
 
 tArrayJd = newEpoch + tArray / Consts.day2sec; % array of julian dates
