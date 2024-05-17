@@ -48,7 +48,7 @@ raanSecularPrecessionRate = - c / ((1 - eMean^2) ^ 2 * aMean ^ (7 / 2)) * cos(iM
 
 theta = (Consts.omegaEarth + raanSecularPrecessionRate) * (pi - spacecraft.betaBeam) * T / (2 * pi);
 
-point = [-1; 0; 0];
+point = [-0.8; 0; 0];
 pointN = rotz(theta * 180/pi)' * point;
 coveredPoints = calcCoveredPoints(rvEcefArray(1:3, :), pointN, spacecraft.betaBeam);
 
@@ -59,15 +59,3 @@ responseTimeHours = responseTime / 60 / 60;
 
 
 timeCheck = (pi - spacecraft.betaBeam) * (1/((2 * pi/ T) ));
-
-
-%%
-for indx = 1:length(rvEcefArray)
-    normRECEF(1:3, indx) = rvEcefArray(1:3, indx)/ norm(rvEcefArray(1:3, indx));
-end
-%%
-figure
-plot3(normRECEF(1, :), normRECEF(2, :), normRECEF(3, :))
-axis equal
-hold on
-plot3(pointN(1), pointN(2), pointN(3), '*')
