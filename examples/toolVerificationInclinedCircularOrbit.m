@@ -58,4 +58,4 @@ responseTimeHours = responseTime / 60 / 60;
 
 
 
-timeCheck = (pi - spacecraft.betaBeam) * (1/((2 * pi/ T) ));
+timeCheck = (pi - spacecraft.betaBeam) * (1 / ((2 * pi / T) ));
