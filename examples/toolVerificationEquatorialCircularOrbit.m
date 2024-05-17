@@ -57,4 +57,4 @@ if signrSatCrossRPoi < 0
     theta0 = 2 * pi - theta0;
 end
 
-analyticalResponseTime = (theta0 - spacecraft.betaBeam) * (1/((2 * pi/ T) - Consts.omegaEarth));
+analyticalResponseTime = (theta0 - spacecraft.betaBeam) * (1 / ((2 * pi / T) - Consts.omegaEarth));
