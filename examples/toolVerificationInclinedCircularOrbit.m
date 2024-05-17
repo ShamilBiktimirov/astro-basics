@@ -49,7 +49,7 @@ raanSecularPrecessionRate = - c / ((1 - eMean^2) ^ 2 * aMean ^ (7 / 2)) * cos(iM
 theta = (Consts.omegaEarth + raanSecularPrecessionRate) * (pi - spacecraft.betaBeam) * T / (2 * pi);
 
 point = [-0.8; 0; 0];
-pointN = rotz(theta * 180/pi)' * point;
+pointN = rotz(theta * 180 / pi)' * point;
 coveredPoints = calcCoveredPoints(rvEcefArray(1:3, :), pointN, spacecraft.betaBeam);
 
 [timeRow, ~] = find(coveredPoints);
