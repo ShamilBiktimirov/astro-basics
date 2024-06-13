@@ -12,7 +12,7 @@ function [a, periodEarthNodal] = calcCircularRgtOrbitSma(i, kDay2Rep, kRev2Rep)
 
     assert(mod(kDay2Rep, 1) < 1e-16 && mod(kRev2Rep, 1) < 1e-16, "kDay2Rep or kRev2Rep is not integer");
 
-    options = optimoptions('fsolve', 'Display', 'none');
+    options = optimoptions('fsolve', 'Display', 'none', 'FunctionTolerance', 1e-15);
 
     c = 3 / 2 * Consts.rEarthEquatorial^2 * Consts.earthJ2;
 
