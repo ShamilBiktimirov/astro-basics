@@ -5,11 +5,13 @@ classdef Consts
         rEarth           = 6371009;                                         % Earth mean radius, [m]
         rMars            = 3396e3;                                          % Mars mean radius, [m]
         rEarthEquatorial = 6.378136300e6;                                   % mean Earth equtorial radius, [m]
-        rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radisu, [m]
+        rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radius, [m]
+        rJupiter         = 71492e3;
         muEarth          = 3.986004415e14;                                  % Earth stadard gravitational parameter, [m^3 / s^2]
         muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
         muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
         muJustitia       = 4.37e6;                                          % Justitia asteroid gravitational parameter, [m^3 / s^2]
+        muJupiter        = 1.26686534e17;
         astronomicUnit   = 149597870691;                                    % Astronomic Unit, [m]
         earthJ2          = 1.082626e-3;                                     % First zonal harmonic coefficient in the expansion of the Earth's gravity field
         earthMeanMotion  = 1.99098367476852e-07                             % Earth mean motion, [rad/s]
