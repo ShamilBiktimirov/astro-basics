@@ -2,18 +2,41 @@ classdef Consts
 
     properties (Constant)
 
-        rEarth           = 6371009;                                         % Earth mean radius, [m]
-        rMars            = 3396e3;                                          % Mars mean radius, [m]
-        rEarthEquatorial = 6.378136300e6;                                   % mean Earth equtorial radius, [m]
-        rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radius, [m]
-        rJupiter         = 71492e3;
 
+        % Planetary radius, [m]
+        % Source: https://ssd.jpl.nasa.gov/planets/phys_par.html#refs
+        rMercury         = 2439.4e3;
+        rVenus           = 6051.8e3;
+        rEarth           = 6371009;
+        rMars            = 3396e3;
+        rJupiter         = 69911e3;
+        rSaturn          = 58232e3;
+        rUranus          = 25362e3;
+        rNeptune         = 24622e3;
+
+        rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radius, [m]
+
+        % Planetary equatorial radius, [m]
+        rEarthEquatorial   = 6.378136300e6;
+        rJupiterEquatorial = 71492e3;
+
+        % Planetary gravitational parameter, [m^3/s^2]
+        % Source: https://ssd.jpl.nasa.gov/planets/phys_par.html#refs
+        muMercury        = 0.330103e24 * 6.6743e-11;
+        muVenus          = 4.86731e24  * 6.6743e-11;
         muEarth          = 3.986004415e14;                                  % Earth stadard gravitational parameter, [m^3 / s^2]
-        muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
-        muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
-        muJustitia       = 4.37e6;                                          % Justitia asteroid gravitational parameter, [m^3 / s^2]
-        muJupiter        = 1.26686534e17;                                   % Jupiter gravitational parameter, [m^3 / s^2]
         muMars           = 42828e9;                                         % Mars gravitational parameter, [m^3 / s^2]
+        muJupiter        = 1.26686534e17;                                   % Jupiter gravitational parameter, [m^3 / s^2]
+        muSaturn         = 568.317e24 * 6.6743e-11;
+        muUranus         = 86.8099e24 * 6.6743e-11;
+        muNeptune        = 102.4092 * 6.6743e-11;
+
+        muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
+        muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
+        muJustitia       = 4.37e6;                                          % Justitia asteroid gravitational parameter, [m^3 / s^2]
+
+        % Laplace Sphere of Influence (SOI), m
+        rSoiJupiter = 48.2e9; 
 
         astronomicUnit   = 149597870691;                                    % Astronomic Unit, [m]
         earthJ2          = 1.082626e-3;                                     % First zonal harmonic coefficient in the expansion of the Earth's gravity field
@@ -35,6 +58,8 @@ classdef Consts
         delta_mjd = 2400000.5;
         goldenRatio      = (1 + sqrt(5)) / 2                                % golden ratio, []
         year2day         = 365;
+
+        gravitationalConstant = 6.6743e-11;                                 % m^3 / kg^2 / s^2
 
     end
 

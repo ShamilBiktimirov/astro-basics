@@ -17,13 +17,17 @@ function plot_dV_map(dV_matrix, input, dV_threshold)
         end
     end
 
-    figure;
+    fig1 = figure;
     contour(LD, TOF, dV_matrix', 'fill', 'on');
     c = colorbar;
     c.Label.String = ('dV, km/s');
     grid on;
     title('Delta-V map');
-    xlabel('Launch date, mjd');
-    ylabel('Time of transfer, days');
+    xlabel('Launch date');
+    ylabel('Time of Flight, days');
+
+    xtickNew = LD(round(linspace(1, length(LD), 10)));
+    xticklabels(string(datetime(xtickNew + Consts.delta_mjd, 'ConvertFrom', 'juliandate')));
+    fontsize(fig1, 24, "points");
 
 end
