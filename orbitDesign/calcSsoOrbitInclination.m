@@ -1,4 +1,4 @@
-function inclination = get_SSO_inclination(a, ecc)
+function inclination = calcSsoOrbitInclination(a, ecc)
 
     % The formula for the RAAN drift is taken from D.A. Vallado Fundamentals of
     % Astrodynamics, page 649, eq 9-37
