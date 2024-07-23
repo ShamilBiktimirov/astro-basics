@@ -12,7 +12,7 @@ function [sma, i_SSO, T_sat_nodal] = calcSsoRgtOrbitSma(k_rev2rep, k_day2rep)
     a_assumption = (Consts.muEarth * (1 / n_assumption) ^ 2) ^ (1 / 3);
 
     a_step = 0.01;  % m
-    delta_a = [-50e3:a_step:50e3];
+    delta_a = [-50e3 : a_step : 50e3];
     error_internal = 99999;
     eps = 1e-3;
 
