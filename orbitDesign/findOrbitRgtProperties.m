@@ -16,9 +16,9 @@ function [kDay2Rep, kRev2Rep] = findOrbitRgtProperties(a, i)
 
     %% Calculates Earth and satellite nodal periods and its ratio
 
-    pSatNodal = calcDraconicPeriod([a, 0, i]);
+    [pSatNodal, pEarthNodal] = calcPeriodNodal([a; 0; i]);
 
-    pEarthNodal = calcEarthNodalPeriod(a, 0, i);
+     % = calcEarthNodalPeriod(a, 0, i);
 
     PSatToEarth = pSatNodal / pEarthNodal;
 
