@@ -84,9 +84,9 @@ function [rsun,rtasc,decl] = sun ( jd );
         magr= 1.000140612  - 0.016708617 *cos( meananomaly ) ...
                               - 0.000139589 *cos( 2.0 *meananomaly );    % in au's
 
-        rsun(1)= magr.*cos( eclplong );
-        rsun(2)= magr.*cos(obliquity).*sin(eclplong);
-        rsun(3)= magr.*sin(obliquity).*sin(eclplong);
+        rsun(1, :)= magr.*cos( eclplong );
+        rsun(2, :)= magr.*cos(obliquity).*sin(eclplong);
+        rsun(3, :)= magr.*sin(obliquity).*sin(eclplong);
 
         if show == 'y'
             fprintf(1,'meanlon %11.6f meanan %11.6f eclplon %11.6f obli %11.6f \n', ...
@@ -95,7 +95,7 @@ function [rsun,rtasc,decl] = sun ( jd );
             fprintf(1,'magr %14.7f \n',magr);
         end
 
-        rtasc= atan( cos(obliquity)*tan(eclplong) );
+        rtasc= atan( cos(obliquity) .* tan(eclplong) );
 
         % --- check that rtasc is in the same quadrant as eclplong ----
         if ( eclplong < 0.0  )
@@ -104,5 +104,5 @@ function [rsun,rtasc,decl] = sun ( jd );
         if ( abs( eclplong-rtasc ) > pi*0.5  )
             rtasc= rtasc + 0.5 *pi*round( (eclplong-rtasc)/(0.5 *pi));
         end
-        decl = asin( sin(obliquity)*sin(eclplong) );
+        decl = asin( sin(obliquity) .* sin(eclplong) );
 
