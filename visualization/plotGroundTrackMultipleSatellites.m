@@ -18,7 +18,7 @@ function plotGroundTrackMultipleSatellites(rEcef, t0Jd)
 
         [azimuth, elevation, ~] = cart2sph(rEcef(1, :, satIdx), rEcef(2, :, satIdx), rEcef(3, :, satIdx));
 
-        plot(rad2deg(azimuth), rad2deg(elevation), 'ok', 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'k', 'MarkerSize', 2);
+        plot(rad2deg(azimuth), rad2deg(elevation), 'ok', 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'k', 'MarkerSize', 1);
         plot(rad2deg(azimuth(1)), rad2deg(elevation(1)), 'og', 'MarkerEdgeColor', 'g', 'MarkerFaceColor', 'g', 'MarkerSize', 5);
         plot(rad2deg(azimuth(end)), rad2deg(elevation(end)), 'or', 'MarkerEdgeColor', 'r', 'MarkerFaceColor', 'r', 'MarkerSize', 5);
 
