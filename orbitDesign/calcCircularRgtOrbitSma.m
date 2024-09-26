@@ -1,11 +1,11 @@
 function [a, periodEarthNodal] = calcCircularRgtOrbitSma(i, kDay2Rep, kRev2Rep)
 
-    % Function finds semi-major for a user specified repeat ground track orbit
+    % Function finds semi-major axis for a user specified repeat ground track orbit
 
     % Input:
     % i [rad], orbit inclination
     % kDay2Rep [-], positive integer value defining number of days for orbit's ground track to repeat
-    % kRev2Rep [-], positive integer value defining number of periods for orbit's ground track to repeat
+    % kRev2Rep [-], positive integer value defining number of revolutions for orbit's ground track to repeat
 
     % Output:
     % a [m], orbit semi-major axis
@@ -27,6 +27,9 @@ function [a, periodEarthNodal] = calcCircularRgtOrbitSma(i, kDay2Rep, kRev2Rep)
 
     periodEarthNodal = 2 * pi / (Consts.omegaEarth - raanDot);
 
-    assert(a > Consts.rEarth, "RGT orbit sma is lower than mean Earth radius");
+    if a < Consts.rEarth
+        warning("RGT orbit sma is lower than mean Earth radius");
+        a = [];
+    end
 
 end
