@@ -27,6 +27,9 @@ function [a, periodEarthNodal] = calcCircularRgtOrbitSma(i, kDay2Rep, kRev2Rep)
 
     periodEarthNodal = 2 * pi / (Consts.omegaEarth - raanDot);
 
-    assert(a > Consts.rEarth, "RGT orbit sma is lower than mean Earth radius");
+    if a < Consts.rEarth
+        warning("RGT orbit sma is lower than mean Earth radius");
+        a = [];
+    end
 
 end
