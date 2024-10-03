@@ -17,8 +17,8 @@ function oes = walkerConstellation(T, P, f, a, inc, walkerType)
     for k = 1:P
         for j = 1:q
             i = i + 1;
-            RAAN = mod((k - 1)*delta_RAAN, 360);
-            M = mod(360*(j - 1)/q + 360*f*(k - 1)/T, 360);
+            RAAN = deg2rad(mod((k - 1)*delta_RAAN, 360));
+            M = deg2rad(mod(360*(j - 1)/q + 360*f*(k - 1)/T, 360));
             oes(i,:) = [a; e; inc; RAAN; w; M];
         end
     end

@@ -8,6 +8,8 @@ function sv = oe2rv(oe)
     % Output:
     %   * rv [m, m/s], column vector
 
+    % TODO: make varargin with gravitational parameter option
+
     sma  = oe(1); % m
     ecc  = oe(2); %  -
     inc  = oe(3); % rad
@@ -20,7 +22,7 @@ function sv = oe2rv(oe)
     r = sma * (1 - ecc ^ 2) / (1 + ecc * cos(v));
 
     r_pqw = r * [cos(v); sin(v); 0];
-    v_pqw = sqrt(Consts.muEarth / (sma * (1 - ecc ^ 2))) * ...
+    v_pqw = sqrt(Consts.muMoon / (sma * (1 - ecc ^ 2))) * ...
             [-sin(v); ecc + cos(v); 0];
 
     Rz_O = [cos(RAAN), -sin(RAAN), 0;...
