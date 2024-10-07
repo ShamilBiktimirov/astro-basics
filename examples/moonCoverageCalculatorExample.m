@@ -57,8 +57,6 @@ statistics.nSatMin     = min(numberOfVisibleSatsArray, [],  2);
 statistics.nSatAverage = mean(numberOfVisibleSatsArray, 2);
 statistics.nSatMax     = max(numberOfVisibleSatsArray, [],  2);
 
-% plot map on top the globe
-
 %% Visualization
 
 % Instant Coverage
@@ -80,8 +78,24 @@ timeIdx = 1;
 % plotting zones having 4-fold coverage
 plot3(moonGrid(1, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(2, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(3, numberOfVisibleSatsArray(:, timeIdx) >= 4), 'or');
 
+% General statisitcs
+figure;
+hold on;
+plot(latArray * 180 / pi, statistics.nSatMin, 'o', 'LineWidth', 2);
+plot(latArray * 180 / pi, statistics.nSatAverage, 'o', 'LineWidth', 2);
+plot(latArray * 180 / pi, statistics.nSatMax, 'o', 'LineWidth', 2);
+xlabel('node latitude, deg');
+ylabel('Number of visible satellites');
+legend('minimum number of accessible satellites', ...
+       'average number of accessible satellites', ...
+       'maximum number of accessible satellites');
+title('24 hours Moon Coverage Simulation');
+xlim([-90, 90]);
+xticks([-90:15:90])
+fontsize(24, "points");
+grid on;
 
-%% Functiond
+%% Functions
 
 function numberOfVisibleSatsArray = calcAccessConditions(rSat, rPOI, centralAngle)
 
