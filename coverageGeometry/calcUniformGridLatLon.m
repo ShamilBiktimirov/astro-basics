@@ -1,19 +1,31 @@
-function [latAarray, lonArray] = calcUniformGridLatLon(gridResolution)
+function [latAarray, lonArray] = calcUniformGridLatLon(gridResolution, varargin)
 
     % Algorithm generates lat, lon for spherical Fibonnaci grid/lattice
     % The more details available at https://www.overleaf.com/read/hsjtzhnncmfw#71ff51
 
     % Input: grid resolution
     % - gridResolution, m
-
+    % - varargin - rSphere for a central body radius different from the Earth's one
     % Output: points spherical coordinates
     % - latArray, rad
     % - lonArray, rad
 
+
+    if nargin == 1
+        rSphere = Consts.rEarth;
+    elseif nargin == 3
+        if strcmpi(varargin(1), 'rSphere')
+            rSphere = cell2mat(varargin(2));
+        else
+            error('Improper function input');
+        end
+    elseif nargin > 3
+        error('Improrer function input');
+    end
+
     epsilon = 0.5; % grid building tuning parameter to avoid singularities at the poles
 
-    nNodes  = round(16 * Consts.rEarth^2 / gridResolution^2);
-
+    nNodes  = round(16 * rSphere^2 / gridResolution^2);
     nodesIdxArray = 1 : nNodes;
 
     % square lattice coordinates
