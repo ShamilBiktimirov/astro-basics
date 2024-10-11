@@ -3,12 +3,12 @@ clear all;
 simulation.initialEpochGd = datetime('today');
 simulation.initialEpochJd = juliandate(simulation.initialEpochGd);
 simulation.runTime        = Consts.day2sec; % s
-simulation.simulatioStep  = 60; % s
+simulation.timeStep       = 60; % s
 
 
-%% Constructing grid of pooint on Moon surface
-% The points are given Moon body-fixed rotating frame
-gridResolution = 50e3; % m
+%% Constructing grid of points on the Moon surface
+% The points are given wrt Moon body-fixed rotating frame (PA frame)
+gridResolution = 100e3; % m
 [latArray, lonArray] = calcUniformGridLatLon(gridResolution, 'rSphere', Consts.rMoonEquatorial);
 
 moonGrid(1, :) = Consts.rMoonEquatorial * cos(latArray) .* cos(lonArray);
@@ -38,8 +38,8 @@ end
 
 %% integrating equations of motion for all constellation satellites simultaneously
 
-options= odeset('RelTol',1e-12,'AbsTol',1e-12);
-tSpan = [0:60:Consts.day2sec]; % propagation time array
+options= odeset('RelTol',1e-8,'AbsTol',1e-8);
+tSpan = [0 simulation.runTime]; % propagation time array
 [tArray, rvArray] = ode45(@(t, rv) rhsMultipleSatsInertial(t, rv, 'point mass'), tSpan, rvArray0, options);
 rvArray = rvArray';
 
@@ -51,13 +51,17 @@ centralAngle = calcBetaAngleGivenElevation(a, elevationMin);
 numberOfVisibleSatsArray = [];
 
 tic;
-for timeIdx = 1:length(tSpan)
+f = waitbar(0, 'Coverage Calculation in Progress');
+
+for timeIdx = 1:length(tArray)
 
     rvArrayReshaped = reshape(rvArray(:, timeIdx), [6, T]);
+
     dcmPa2I = transformationMatrixPa2I(simulation.initialEpochJd + tArray(timeIdx) / Consts.day2sec);
-    rArrayTransformed = dcmPa2I' * rvArrayReshaped(1:3, :); % transform position from Intertial to Body-fixed frame
+    rArrayTransformed = dcmPa2I' * rvArrayReshaped(1:3, :); % transform position from Inertial to Body-fixed frame
 
     numberOfVisibleSatsArray = [numberOfVisibleSatsArray, calcAccessConditions(rArrayTransformed, moonGrid, centralAngle)];
+    waitbar(timeIdx / length(tArray), f, 'Coverage Calculation in Progress');
 
 end
 toc;
@@ -108,8 +112,7 @@ grid on;
 
 function numberOfVisibleSatsArray = calcAccessConditions(rSat, rPOI, centralAngle)
 
-    % Function finds a set of nodes on Earth located within area bounded by betaAngles
-    % ToDo: provide a description document in overleaf
+    % Function finds a set of nodes on the Moon located within the area bounded by the centralAngle
 
     % Input:
     % - rSat [3, n], an array of satellite position vectors
@@ -117,7 +120,7 @@ function numberOfVisibleSatsArray = calcAccessConditions(rSat, rPOI, centralAngl
     % - centralAngle, rad, included angle for circular FOV coverage check
 
     % Output:
-    % coveredPoints [m, 1] - logical vector of covered points
+    % numberOfVisibleSatsArray [m, 1] - array of number of visible satellites for i-th moon grid nodes
 
     ePoiArray  = rPOI ./ vecnorm(rPOI);
 
@@ -136,12 +139,10 @@ end
 
 function rvPrime = rhsMultipleSatsInertial(t, rv, environment)
 
-    % rhs for N satellites orbital motion dynamics in Moon-centered Inertial frame
+    % rhs for N satellites orbital motion dynamics in Moon-centered Inertial reference frame 
 
     % input:
     % rv            [nSats * 6, 1], [m, m/s]
-    % controlVector [nSats * 3, 1], [N] in moon-centered intertial frame
-    % spacecraft    a structure with spacecraft parameters
 
     % Orbital motion dynamics models:
     % 'point mass'                  - motion in central gravity field of Luna
@@ -171,11 +172,13 @@ end
 
 function dcmPa2I = transformationMatrixPa2I(julianDate)
 
-    % Three Euler angles, precession, nutation, and self rotation
+    % Three Euler angles - precession, nutation, and self rotation
+    % Solution approximated by polynom, better to move to DE430 ephemerides later
     [rasc_pole, decl_pole, rasc_pm] = moon_angles(julianDate);
 
     % 3-1-3 Euler Angles, intrinsic rotations
     dcmPa2I = rotationZ(rasc_pole) * rotationX(decl_pole) * rotationZ(rasc_pm);
 
     % Matrix notation: r_PA = dcmPa2I * r_I
+
 end
