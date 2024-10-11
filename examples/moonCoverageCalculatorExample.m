@@ -1,6 +1,13 @@
 clear all;
 
+simulation.initialEpochGd = datetime('today');
+simulation.initialEpochJd = juliandate(simulation.initialEpochGd);
+simulation.runTime        = Consts.day2sec; % s
+simulation.simulatioStep  = 60; % s
+
+
 %% Constructing grid of pooint on Moon surface
+% The points are given Moon body-fixed rotating frame
 gridResolution = 50e3; % m
 [latArray, lonArray] = calcUniformGridLatLon(gridResolution, 'rSphere', Consts.rMoonEquatorial);
 
@@ -42,11 +49,13 @@ elevationMin = deg2rad(30);
 centralAngle = calcBetaAngleGivenElevation(a, elevationMin);
 
 numberOfVisibleSatsArray = [];
-tic
+
+tic;
 for timeIdx = 1:length(tSpan)
 
-    rvArrayTransformed = reshape(rvArray(:, timeIdx), [6, T]);
-    rArrayTransformed = rvArrayTransformed(1:3, :);
+    rvArrayReshaped = reshape(rvArray(:, timeIdx), [6, T]);
+    dcmPa2I = transformationMatrixPa2I(simulation.initialEpochJd + tArray(timeIdx) / Consts.day2sec);
+    rArrayTransformed = dcmPa2I' * rvArrayReshaped(1:3, :); % transform position from Intertial to Body-fixed frame
 
     numberOfVisibleSatsArray = [numberOfVisibleSatsArray, calcAccessConditions(rArrayTransformed, moonGrid, centralAngle)];
 
@@ -122,7 +131,7 @@ function numberOfVisibleSatsArray = calcAccessConditions(rSat, rPOI, centralAngl
     Cmatrix = squeeze(dot(ePoiArray3D, eSatArray3D, 1)) >= cos(centralAngle);
 
     numberOfVisibleSatsArray = sum(Cmatrix, 2);
-    
+
 end
 
 function rvPrime = rhsMultipleSatsInertial(t, rv, environment)
@@ -158,4 +167,15 @@ function rvPrime = rhsMultipleSatsInertial(t, rv, environment)
 
     rvPrime = reshape(rvPrime + perturbations, [6 * nSats, 1]);
 
+end
+
+function dcmPa2I = transformationMatrixPa2I(julianDate)
+
+    % Three Euler angles, precession, nutation, and self rotation
+    [rasc_pole, decl_pole, rasc_pm] = moon_angles(julianDate);
+
+    % 3-1-3 Euler Angles, intrinsic rotations
+    dcmPa2I = rotationZ(rasc_pole) * rotationX(decl_pole) * rotationZ(rasc_pm);
+
+    % Matrix notation: r_PA = dcmPa2I * r_I
 end
