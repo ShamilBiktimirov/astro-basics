@@ -52,4 +52,13 @@ def calc_right_asc_and_declination(position_vector):
     
     return right_ascension, declination
 
+def calc_geocentric_radius_for_ellipsoid(lat):
+    from consts import Consts
+    # considers WGS84 model
+    # lat is given in radians
+    nom = 1 - (2 * Consts.eccEarth**2 - Consts.eccEarth**4) * np.sin(lat)**2
+    denom = 1 - Consts.eccEarth**2 * np.sin(lat)**2
     
+    r = Consts.rEarthEquatorial * (nom / denom)**(1/2)
+    
+    return r

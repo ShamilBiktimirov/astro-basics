@@ -3,6 +3,7 @@ class Consts:
 
         rEarth           = 6371009                                         # Earth mean radius, [m]
         rEarthEquatorial = 6.378136300e6                                   # mean Earth equtorial radius, [m]
+        eccEarth         = 0.0818                                          # eccentricity of the Earth ellipsoid, []
         rMars            = 3396e3                                          # Mars mean radius, [m]
         rJustitia        = 50.728e3 / 2                                    # Justita asteroid mean radisu, [m]
         rMoonEquatorial  = 1738e3                                          # Moon equatorial radius, [m], D. Vallado, Fundamental of Astrodynamics and Applications
