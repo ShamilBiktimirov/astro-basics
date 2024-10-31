@@ -22,10 +22,20 @@ def calc_local_azimuth_and_elevation(r_obs_eci, r_sat_eci):
     z = r_rel_local[2]
     
     # see to the f igure for more details on the reference frame and angles
-    az, elev = calc_right_asc_and_declination(r_rel_local)    
-    return az - np.pi/2, elev
+    az, elev = calc_right_asc_and_declination(r_rel_local)
+    az = az - np.pi/2 # because y-axis is reference direction and it points to the north
+    
+    if az > 0 and az > np.pi:
+        az = 2 * np.pi - az
+    elif az < 0 and np.absolute(az) > np.pi:
+        az = 2 * np.pi + az
+        
+    return az, elev
 
 def calc_right_asc_and_declination(position_vector):
+
+    # Calculates geocentric celestial coordinates,
+    # Adopted from Algorithm 25, D. Vallado, Fundamentals of astrodynamics and applications
     
     x = position_vector[0]
     y = position_vector[1]
@@ -38,7 +48,7 @@ def calc_right_asc_and_declination(position_vector):
     
     sin_ra = y / (x**2 + y**2)**(1/2)
     cos_ra = x / (x**2 + y**2)**(1/2)
-    right_ascension = np.arctan2(sin_ra, cos_ra)
+    right_ascension = np.arctan2(sin_ra, cos_ra) # returns values from -pi to pi
     
     return right_ascension, declination
 
