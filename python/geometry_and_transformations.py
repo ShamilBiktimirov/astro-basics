@@ -49,7 +49,7 @@ def calc_right_asc_and_declination(position_vector):
     sin_ra = y / (x**2 + y**2)**(1/2)
     cos_ra = x / (x**2 + y**2)**(1/2)
     right_ascension = np.arctan2(sin_ra, cos_ra) # returns values from -pi to pi
-    
+
     return right_ascension, declination
 
 def calc_geocentric_radius_for_ellipsoid(lat):
