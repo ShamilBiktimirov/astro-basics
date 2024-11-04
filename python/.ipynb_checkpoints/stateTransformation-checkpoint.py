@@ -80,3 +80,26 @@ def oe2rv_vect(oe, **kwargs):
     r_ijk = np.matmul(R, r_pqw.T.reshape((v.shape[0],3,1))).reshape((v.shape[0],3))
     v_ijk = np.matmul(R, v_pqw.T.reshape((v.shape[0],3,1))).reshape((v.shape[0],3))
     return np.hstack([r_ijk,v_ijk]).reshape((v.shape[0]*6,))
+
+
+def degrees_to_dms(deg_value):
+    # Extract degrees
+    degrees = int(deg_value)
+    # Calculate minutes from the decimal part
+    minutes = int((deg_value - degrees) * 60)
+    # Calculate seconds from the remaining decimal part
+    seconds = (deg_value - degrees - minutes / 60) * 3600
+    return [degrees, minutes, seconds]
+
+
+def degrees_to_hms(deg_value):
+    if deg_value < 0: 
+        deg_value = 360 + deg_value  
+    # Convert degrees to hours
+    hours = int(deg_value / 15)
+    # Calculate minutes from the remaining decimal part
+    minutes = int((deg_value / 15 - hours) * 60)
+    # Calculate seconds from the remaining decimal part
+    seconds = ((deg_value / 15 - hours) * 60 - minutes) * 60
+    return [hours, minutes, seconds]
+

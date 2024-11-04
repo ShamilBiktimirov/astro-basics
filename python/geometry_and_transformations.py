@@ -52,6 +52,27 @@ def calc_right_asc_and_declination(position_vector):
 
     return right_ascension, declination
 
+
+def calc_right_asc_and_declination_Topo(sat_eci, obs_eci):
+
+    # Calculates geocentric celestial coordinates,
+    # Adopted from Algorithm 25, D. Vallado, Fundamentals of astrodynamics and applications
+
+    position_vector = sat_eci - obs_eci
+    x = position_vector[0]
+    y = position_vector[1]
+    z = position_vector[2]
+    
+    declination = np.arcsin(z / np.linalg.norm(position_vector))
+    
+    sin_ra = y / (x**2 + y**2)**(1/2)
+    cos_ra = x / (x**2 + y**2)**(1/2)
+    right_ascension = np.arctan2(sin_ra, cos_ra) # returns values from -pi to pi
+
+    return right_ascension, declination
+
+
+
 def calc_geocentric_radius_for_ellipsoid(lat):
     from consts import Consts
     # considers WGS84 model
