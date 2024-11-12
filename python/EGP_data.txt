@@ -1,1 +1,0 @@
-Date and Time, UTC	                R.A., deg	             Dec, deg	           Az, deg	            Elev, deg
