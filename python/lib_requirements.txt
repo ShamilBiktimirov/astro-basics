@@ -1,0 +1,11 @@
+pip install numpy
+pip install matplotlib
+pip install statistics
+pip install sgp4
+pip install datetime
+pip install astropy
+pip install pandas
+pip install skyfield
+pip install plotly
+pip install requests
+

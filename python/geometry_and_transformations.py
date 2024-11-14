@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 def cart_to_sph(position_vector):
     # TODO add rho coordinate
@@ -50,7 +51,7 @@ def calc_ra_and_dec_topocentric(r_sat_eci, r_obs_eci):
 
     r_obs2sat = r_sat_eci - r_obs_eci
 
-    right_ascension_topo, declination_topo = cart_to_sph(r_obs2sat)
+    declination_topo, right_ascension_topo = cart_to_sph(r_obs2sat)
 
     return right_ascension_topo, declination_topo
 
@@ -66,7 +67,7 @@ def calc_geocentric_radius_for_ellipsoid(lat):
     return r
 
 def degrees_to_dms(deg_value):
-    # Extract degrees
+    # input angle in deg -90 to 90
     degrees = int(deg_value)
     # Calculate minutes from the decimal part
     minutes = int((deg_value - degrees) * 60)
@@ -75,6 +76,7 @@ def degrees_to_dms(deg_value):
     return [degrees, minutes, seconds]
 
 def degrees_to_hms(deg_value):
+    # input angle in deg -180 to 180
     if deg_value < 0: 
         deg_value = 360 + deg_value  
     # Convert degrees to hours
@@ -104,3 +106,71 @@ def plot_sky_s(altaz_coordinates, epochs):
         ax.text(altaz_coordinates[point_idx,0] * np.pi / 180, altaz_coordinates[point_idx,1], text, ha='right', va='bottom')
 
     plt.show()
+
+
+def plot_polar_interactive(celestial_coordinates_array_processed):
+    # input:
+    # celestial_coordinates_array_processed[:, 0]: time
+    # celestial_coordinates_array_processed[:, 1]: right ascension 
+    # celestial_coordinates_array_processed[:, 2]: declination
+    # celestial_coordinates_array_processed[:, 3]: azimuth, deg
+    # celestial_coordinates_array_processed[:, 3]: elevation, deg
+
+      
+    labels = []
+    for i in range(len(celestial_coordinates_array_processed)):
+        labels.append(f"Azimuth: {celestial_coordinates_array_processed [i, 3] % 360:.1f}°<br>Elevation: {celestial_coordinates_array_processed [i, 4]:.1f}°<br>RA: {celestial_coordinates_array_processed [i, 1]}<br>Dec: {celestial_coordinates_array_processed [i, 2]}<br>Time: {celestial_coordinates_array_processed [i, 0]}")
+    
+    
+    # Create an interactive polar plot with Plotly
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatterpolar(
+        r=celestial_coordinates_array_processed[:, 4],
+        theta=celestial_coordinates_array_processed[:, 3] % 360,
+        mode='lines+markers',
+        marker=dict(color='orange', size=5),
+        line=dict(color='orange'),
+        text=labels,  # Add labels for each point
+        textposition="top center",  # Position labels at the top center of each marker
+        hoverinfo="text",  # Show text on hover
+        name=" Satellite Trajectory"
+    ))
+    
+    
+    # Customize layout to match previous appearance
+    fig.update_layout(
+        polar=dict(
+            bgcolor="midnightblue",  # Dark background color
+            radialaxis=dict(
+                range=[90, 0],  # 90 at center (zenith), 0 at edge (horizon)
+                tickvals=[30, 60, 90],  # Tick values for altitude
+                ticktext=['30°', '60°', 'Zenith'],  # Altitude labels
+                tickfont=dict(color="white"),
+                showline=False,
+                showticklabels=True,
+                ticks="",
+       
+            ),
+            angularaxis=dict(
+                direction="counterclockwise",
+                rotation=90,  # Rotate to start at north
+                tickvals=[0, 45, 90, 135, 180, 225, 270, 315],
+                # tickvals=[0, 315, 270, 225, 180, 135, 90, 45],
+                ticktext=['N, 0°', 'NE, 45°', 'E, 90°', 'SE, 135°', 'S, 180°', 'SW, 225°', 'W, 270°', 'NW, 315°'],
+                # ticktext=['N, 0°', 'NW, 315°', 'W, 270°', 'SW, 225°', 'S, 180°', 'SE, 135°', 'E, 90°', 'NE, 45°'],
+                tickfont=dict(color="lime", size=14)
+            )
+        ),
+        title="Satellite Trajectory Above Abu Dhabi",
+        font=dict(color="white"),
+        showlegend=True,
+        legend=dict(font=dict(size=10, color="white")),
+        paper_bgcolor="midnightblue",  # Background color for the figure
+        width=1500,  # Figure width
+        height=1500  # Figure height
+    )
+    
+    fig.show()
+
+    
