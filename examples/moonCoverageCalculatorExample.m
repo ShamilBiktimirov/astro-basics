@@ -63,14 +63,14 @@ GDOParray = [];
 
 % fully vectorized routine for each time step
 tic;
-parfor timeIdx = 1:length(tArray)
+for timeIdx = 1:length(tArray)
 
     rvArrayReshaped = reshape(rvArray(:, timeIdx), [6, T]);
 
     dcmPa2I = transformationMatrixPa2I(simulation.initialEpochJd + tArray(timeIdx) / Consts.day2sec);
     rArrayTransformed = dcmPa2I' * rvArrayReshaped(1:3, :); % transform position from Inertial to Body-fixed frame
 
-    [numberOfVisibleSatsArrayLocal, ~, Hmatrix3d] = calcAccessConditionsElevation(rArrayTransformed, moonGrid, elevationMin);
+    [numberOfVisibleSatsArrayLocal, ~, Hmatrix3d] = calcAccessConditionsUsingElevation(rArrayTransformed, moonGrid, elevationMin);
     numberOfVisibleSatsArray = [numberOfVisibleSatsArray, numberOfVisibleSatsArrayLocal];
 
     Dmatrix = pageinv(pagemtimes(permute(Hmatrix3d, [1, 3, 2]), permute(Hmatrix3d, [3, 1, 2])));
@@ -85,56 +85,6 @@ end
 close(f);
 toc;
 
-% partially vectorized routine for each step
-GDOParray2 = [];
-f = waitbar(0, 'Coverage Calculation in Progress');
-tic;
-for timeIdx = 1:length(tArray)
-
-    rvArrayReshaped = reshape(rvArray(:, timeIdx), [6, T]);
-
-    dcmPa2I = transformationMatrixPa2I(simulation.initialEpochJd + tArray(timeIdx) / Consts.day2sec);
-    rArrayTransformed = dcmPa2I' * rvArrayReshaped(1:3, :); % transform position from Inertial to Body-fixed frame
-
-    [numberOfVisibleSatsArrayLocal, Cmatrix, Hmatrix3d] = calcAccessConditionsElevation(rArrayTransformed, moonGrid, elevationMin);
-    numberOfVisibleSatsArray = [numberOfVisibleSatsArray, numberOfVisibleSatsArrayLocal];
-
-    % checks statement of having enough visible satellite for navigation
-    if all(numberOfVisibleSatsArrayLocal >= 4)
-    
-        % try to get rid of point-wise loop
-        for pointIdx = 1:nGridPoints
-    
-            % satIdxs = find(Cmatrix(pointIdx, :) == 1);
-            % drUnit = (rArrayTransformed(:, satIdxs) - moonGrid(:, pointIdx)) ./ vecnorm((rArrayTransformed(:, satIdxs) - moonGrid(:, pointIdx)));
-            % H = [drUnit; ones(1, size(drUnit, 2))]';
-            H = squeeze(Hmatrix3d(:, pointIdx, :))';
-            D = inv(H' * H);
-            GDOParray(pointIdx, timeIdx) = trace(D)^(1/2); % Geometrical dilution of precision
-            % PDOParray(pointIdx, timeIdx) = (D(1, 1) + D(2, 2) + D(3, 3))^(1/2); % Position dilution of precision
-            % HDOParray(pointIdx, timeIdx) = (D(1, 1) + D(2, 2))^(1/2); % Horizontal dilution of precision
-            % VDOParray(pointIdx, timeIdx) = D(3, 3)^(1/2); % Vertical dilution of precision
-            % TDOParray(pointIdx, timeIdx) = D(4, 4)^(1/2); % Time dilution of precision
-    
-        end
-    
-    else
-    
-            GDOParray(pointIdx, timeIdx) = NaN;
-            % PDOParray(pointIdx, timeIdx) = NaN;
-            % HDOParray(pointIdx, timeIdx) = NaN;
-            % VDOParray(pointIdx, timeIdx) = NaN;
-            % TDOParray(pointIdx, timeIdx) = NaN;
-    
-    end
-
-    waitbar(timeIdx / length(tArray), f, 'Coverage Calculation in Progress');
-
-
-end
-toc;
-close(f);
-
 statistics.nSatMin     = min(numberOfVisibleSatsArray, [],  2);
 statistics.nSatAverage = mean(numberOfVisibleSatsArray, 2);
 statistics.nSatMax     = max(numberOfVisibleSatsArray, [],  2);
@@ -143,13 +93,14 @@ statistics.nSatMax     = max(numberOfVisibleSatsArray, [],  2);
 
 % Instant Coverage
 figure();
+hold on;
 plotMoonMeters();
 plot3(moonGrid(1, :), moonGrid(2, :), moonGrid(3, :), 'ok');
 
 rvSatCurrentIdx = 1:6;
 for satIdx = 1:(T-1)
 
-    plot3(rvArray(rvSatCurrentIdx(1), :), rvArray(rvSatCurrentIdx(2), :), rvArray(rvSatCurrentIdx(3), :), '-g');
+    plot3(rvArray(rvSatCurrentIdx(1), :), rvArray(rvSatCurrentIdx(2), :), rvArray(rvSatCurrentIdx(3), :), '-k');
     plot3(rvArray(rvSatCurrentIdx(1), 1), rvArray(rvSatCurrentIdx(2), 1), rvArray(rvSatCurrentIdx(3), 1), 'ob');
 
     rvSatCurrentIdx = rvSatCurrentIdx + 6;
@@ -158,7 +109,7 @@ end
 
 timeIdx = 1;
 % plotting zones having 4-fold coverage
-plot3(moonGrid(1, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(2, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(3, numberOfVisibleSatsArray(:, timeIdx) >= 4), 'or');
+plot3(moonGrid(1, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(2, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(3, numberOfVisibleSatsArray(:, timeIdx) >= 4), 'og');
 
 % General statisitcs
 figure;
@@ -179,7 +130,7 @@ grid on;
 
 %% Functions
 
-function [numberOfVisibleSatsArray, Cmatrix, Hmatrix3d] = calcAccessConditionsElevation(rSat, rPOI, elevationMin)
+function [numberOfVisibleSatsArray, Cmatrix, Hmatrix3d] = calcAccessConditionsUsingElevation(rSat, rPOI, elevationMin)
 
     % Function finds a set of nodes on the Moon located within the area bounded by the minimum elevation
 
