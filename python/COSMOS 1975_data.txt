@@ -1,0 +1,1 @@
+Date and Time, UTC	        R.A., h_m_s	     Dec, deg_m_s	     Az, deg	     Elev, deg	        MJD

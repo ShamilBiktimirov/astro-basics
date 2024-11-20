@@ -24,6 +24,7 @@ class Consts:
         gravitationalAcceleration = 9.80665                                # gravitational acceleration on Earth, [m/s^2]
         solarRadiationPressure    = 4.57e-6                                # solar radiation pressure, [N/m^2]
         delta_MJD_GMAT            = 2430000.0                              # backward convertion from modified Julian days in GMAT to Julian days
+        delta_MJD                 = 2400000.5                              # backward convertion from modified Julian days in nasa to Julian days (https://core2.gsfc.nasa.gov/time/)
         karmanLineHeight          = 100e3                                  # Karman line - end of life altitude, [m]
         sunlightIntensity         = 1370                                   # Sunlight intensity at Earth orbit, W/m^2
         earthMagneticField        = 7.812e15                               # Average Earth magnetic field dipole strength [W*b/m]
