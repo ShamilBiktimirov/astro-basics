@@ -10,6 +10,9 @@ classdef Consts
         muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
         muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
         muJustitia       = 4.37e6;                                          % Justitia asteroid gravitational parameter, [m^3 / s^2]
+        muJustitiaLow    = 5.287e6;                                         % Justitia asteroid GM - low density, [m^3 / s^2]
+        muJustitiaMid    = 7.98e6;                                          % Justitia asteroid GM - mid density, [m^3 / s^2]
+        muJustitiaHigh   = 14.16e6;                                         % Justitia asteroid GM - high density, [m^3 / s^2]
         astronomicUnit   = 149597870691;                                    % Astronomic Unit, [m]
         earthJ2          = 1.082626e-3;                                     % First zonal harmonic coefficient in the expansion of the Earth's gravity field
         earthMeanMotion  = 1.99098367476852e-07                             % Earth mean motion, [rad/s]
