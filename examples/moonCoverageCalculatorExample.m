@@ -1,24 +1,8 @@
 clear all;
 
-simulation.initialEpochGd = datetime('today');
-simulation.initialEpochJd = juliandate(simulation.initialEpochGd);
-simulation.runTime        = Consts.day2sec / 24; % s
-simulation.timeStep       = 500; % s
-
-
-%% Constructing grid of points on the Moon surface
-% The points are given wrt Moon body-fixed rotating frame (PA frame)
-gridResolution = 200e3; % m
-[latArray, lonArray] = calcUniformGridLatLon(gridResolution, 'rSphere', Consts.rMoonEquatorial);
-
-moonGrid(1, :) = Consts.rMoonEquatorial * cos(latArray) .* cos(lonArray);
-moonGrid(2, :) = Consts.rMoonEquatorial * cos(latArray) .* sin(lonArray);
-moonGrid(3, :) = Consts.rMoonEquatorial * sin(latArray);
-nGridPoints = size(moonGrid, 2);
-
 %% Defining Walker Constellation, T/P/f - total sat number, plane number, phasing parameter
-T = 100; 
-P = 10;
+T = 24; 
+P = 6;
 f = 1;
 
 % sma, inclination
@@ -26,10 +10,30 @@ a = Consts.rMoonEquatorial + 1000e3;
 inc = deg2rad(70);
 walkerType = 'delta';
 
+orbitPeriod = calcPeriodKeplerian(a);
+
 %% Defining mean orbital elements sets for all constellation satellites
 oeArray = walkerConstellation(T, P, f, a, inc, walkerType);
 oeArray = oeArray';
 rvArray0 = [];
+
+%% Constructing grid of points on the Moon surface
+% The points are given wrt Moon body-fixed rotating frame (PA frame)
+gridResolution = 100e3; % m
+[latArray, lonArray] = calcUniformGridLatLon(gridResolution, 'rSphere', Consts.rMoonEquatorial);
+
+moonGrid(1, :) = Consts.rMoonEquatorial * cos(latArray) .* cos(lonArray);
+moonGrid(2, :) = Consts.rMoonEquatorial * cos(latArray) .* sin(lonArray);
+moonGrid(3, :) = Consts.rMoonEquatorial * sin(latArray);
+nGridPoints = size(moonGrid, 2);
+
+%% Simulation parameters
+simulation.initialEpochGd = datetime('today');
+simulation.initialEpochJd = juliandate(simulation.initialEpochGd);
+simulation.runTime        = orbitPeriod; % s
+simulation.timeStep       = 500; % s
+
+
 
 %% Transforming oe state to cartesian state
 for satIdx = 1:size(oeArray, 2)
@@ -72,10 +76,13 @@ for timeIdx = 1:length(tArray)
 
     [numberOfVisibleSatsArrayLocal, ~, Hmatrix3d] = calcAccessConditionsUsingElevation(rArrayTransformed, moonGrid, elevationMin);
     numberOfVisibleSatsArray = [numberOfVisibleSatsArray, numberOfVisibleSatsArrayLocal];
-
-    Dmatrix = pageinv(pagemtimes(permute(Hmatrix3d, [1, 3, 2]), permute(Hmatrix3d, [3, 1, 2])));
-    GDOParray = [GDOParray, squeeze(sqrt(Dmatrix(1, 1, :) + Dmatrix(2, 2, :) + Dmatrix(3, 3, :) + Dmatrix(4, 4, :)))];
-
+    
+    if all(numberOfVisibleSatsArray >= 4)
+        Dmatrix = pageinv(pagemtimes(permute(Hmatrix3d, [1, 3, 2]), permute(Hmatrix3d, [3, 1, 2])));
+        GDOParray = [GDOParray, squeeze(sqrt(Dmatrix(1, 1, :) + Dmatrix(2, 2, :) + Dmatrix(3, 3, :) + Dmatrix(4, 4, :)))];
+    else
+        GDOParray = [GDOParray, nan(nGridPoints, 1)];
+    end
     waitbar(timeIdx / length(tArray), f, 'Coverage Calculation in Progress');
 
     numberOfVisibleSatsArrayLocal = [];
@@ -95,13 +102,14 @@ statistics.nSatMax     = max(numberOfVisibleSatsArray, [],  2);
 figure();
 hold on;
 plotMoonMeters();
-plot3(moonGrid(1, :), moonGrid(2, :), moonGrid(3, :), 'ok');
+plot3(moonGrid(1, :), moonGrid(2, :), moonGrid(3, :), 'ok', 'MarkerSize', 4, 'MarkerFaceColor', 'k');
+axis equal;
 
 rvSatCurrentIdx = 1:6;
 for satIdx = 1:(T-1)
 
     plot3(rvArray(rvSatCurrentIdx(1), :), rvArray(rvSatCurrentIdx(2), :), rvArray(rvSatCurrentIdx(3), :), '-k');
-    plot3(rvArray(rvSatCurrentIdx(1), 1), rvArray(rvSatCurrentIdx(2), 1), rvArray(rvSatCurrentIdx(3), 1), 'ob');
+    plot3(rvArray(rvSatCurrentIdx(1), 1), rvArray(rvSatCurrentIdx(2), 1), rvArray(rvSatCurrentIdx(3), 1), 'ok', 'MarkerSize', 10, 'MarkerFaceColor', 'k');
 
     rvSatCurrentIdx = rvSatCurrentIdx + 6;
 
@@ -109,7 +117,7 @@ end
 
 timeIdx = 1;
 % plotting zones having 4-fold coverage
-plot3(moonGrid(1, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(2, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(3, numberOfVisibleSatsArray(:, timeIdx) >= 4), 'og');
+% plot3(moonGrid(1, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(2, numberOfVisibleSatsArray(:, timeIdx) >= 4), moonGrid(3, numberOfVisibleSatsArray(:, timeIdx) >= 4), 'og');
 
 % General statisitcs
 figure;
