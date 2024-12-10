@@ -28,7 +28,6 @@ classdef Consts
         earthMagneticField        = 7.812e15;                               % Average Earth magnetic field dipole strength [W*b/m]
         goldenRatio               = (1 + sqrt(5)) / 2                       % golden ratio, []
         p_srp = 4.57e-6;                                                    % solar radiation pressure, N/m^2
-
     end
 
 end

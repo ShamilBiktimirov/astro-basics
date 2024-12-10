@@ -1,12 +1,27 @@
-function sv = oe2rv(oe)
-    % Converts orbital elements to ECI state
+function sv = oe2rv(oe, varargin)
+
+    % Converts orbital elements to inertial state - position and velocity
     %
     % Input:
-    %   * orbital elements [m, rad]
-    %   * consts
-
+    %   - orbital elements [m, rad]
+    %   - varargin, 'planetGp' in m/s^2
+    
     % Output:
-    %   * rv [m, m/s], column vector
+    %   - rv [m, m/s], column vector
+    
+    % planetGp - planet gravitational parameter
+    
+    if nargin == 1
+        planetGp = Consts.muEarth;
+    elseif nargin == 3
+        if strcmpi(varargin(1), 'planetGp')
+            planetGp = cell2mat(varargin(2));
+        else
+            error('Improper function input');
+        end
+    elseif nargin > 3
+        error('Improrer function input');
+    end
 
     sma  = oe(1); % m
     ecc  = oe(2); %  -
@@ -20,7 +35,7 @@ function sv = oe2rv(oe)
     r = sma * (1 - ecc ^ 2) / (1 + ecc * cos(v));
 
     r_pqw = r * [cos(v); sin(v); 0];
-    v_pqw = sqrt(Consts.muEarth / (sma * (1 - ecc ^ 2))) * ...
+    v_pqw = sqrt(planetGp / (sma * (1 - ecc ^ 2))) * ...
             [-sin(v); ecc + cos(v); 0];
 
     Rz_O = [cos(RAAN), -sin(RAAN), 0;...
