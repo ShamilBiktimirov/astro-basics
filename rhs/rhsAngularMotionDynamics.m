@@ -2,7 +2,7 @@ function Xdot = rhsAngularMotionDynamics(t, X, J, M)
 
     % X = [q; omega] - angular dynamics state
     % J - inertia tensor
-    % External torque 
+    % M - external torque
 
     q = X(1:4);
     omega = X(5:7);
