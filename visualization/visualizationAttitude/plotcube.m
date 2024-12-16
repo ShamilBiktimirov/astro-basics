@@ -32,7 +32,7 @@ axis square;
 xlabel('x, m');
 ylabel('y, m');
 zlabel('z, m');
-gif('CubeSat.gif','frame',gcf);
+gif('attitude_dynamics.gif','frame',gcf);
 
 for i=1:m
 xax = [[0;0;0],p(:,1,i)];
@@ -56,7 +56,7 @@ c = plot3(xax(1,:), xax(2,:), xax(3,:),'r',...
           edges(1,:,12,i),edges(2,:,12,i),edges(3,:,12,i),'k');
     gif;
     drawnow;
-    pause(0.01);
+    pause(0.0001);
     delete(c);
 
 end
