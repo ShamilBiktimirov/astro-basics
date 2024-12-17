@@ -16,6 +16,8 @@ classdef Consts
         muJustitiaHigh   = 14.16e6;                                         % Justitia asteroid GM - high density, [m^3 / s^2]
         astronomicUnit   = 149597870691;                                    % Astronomic Unit, [m]
         earthJ2          = 1.082626e-3;                                     % First zonal harmonic coefficient in the expansion of the Earth's gravity field
+        justitiaJ2       = -0.01272;                                        % Justitia J2, from LASP conf paper
+        justitiaJ4       = 0.001594;                                        % Justitia J4, from LASP conf paper
         earthMeanMotion  = 1.99098367476852e-07                             % Earth mean motion, [rad/s]
         deg2rad          = pi/180;                                          % conversion from degrees to radians
         rad2deg          = 180/pi;                                          % conversion from radians to degrees
