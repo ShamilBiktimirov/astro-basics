@@ -5,8 +5,8 @@ classdef Consts
         rEarth           = 6371009;                                         % Earth mean radius, [m]
         rMars            = 3396e3;                                          % Mars mean radius, [m]
         rEarthEquatorial = 6.378136300e6;                                   % mean Earth equtorial radius, [m]
-        % rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radisu, [m]
-        rJustitia        = 28e3;                                    % Justita asteroid mean radisu, [m]
+        rJustitia        = 50.728e3 / 2;                                    % Justita asteroid mean radius, [m], from JPL SSD
+        rJustitiaLasp    = 28e3;                                            % Justita asteroid mean radius, [m], from lasp conf paper
         muEarth          = 3.986004415e14;                                  % Earth stadard gravitational parameter, [m^3 / s^2]
         muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
         muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
