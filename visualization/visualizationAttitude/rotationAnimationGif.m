@@ -1,4 +1,4 @@
-function rotationAnimationGif(satDimensions, qArray)
+function rotationAnimationGif(satDimensions, qArray, targetDirectionArray)
 
     [verticesPositionsArray_B, linksArray] = calcParallelepidedVecticesPositions(satDimensions);
 
@@ -43,12 +43,15 @@ function rotationAnimationGif(satDimensions, qArray)
         zVertices = verticesPositionsArray_I(3, :);
         satLocal = patch(xVertices(linksArray), yVertices(linksArray), zVertices(linksArray), 'k', 'facealpha', 0.1);
 
+        targetDirection = plot3([0, targetDirectionArray(1, timeIdx) * axisLength], [0, targetDirectionArray(2, timeIdx) * axisLength], [0, targetDirectionArray(3, timeIdx) * axisLength], 'k', LineWidth=2);
+
         gif;
         if timeIdx < size(qArray, 2)
             delete(bodyFrameX);
             delete(bodyFrameY);
             delete(bodyFrameZ);
             delete(satLocal);
+            delete(targetDirection);
         end
 
     end

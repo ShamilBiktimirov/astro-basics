@@ -4,8 +4,7 @@ function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spa
     % stateVector   [nSats * 13, 1], [m, m/s]
     % stateVector = [r; v; q; omega]
 
-    % controlThrustVector [nSats * 3, 1], [N] in ECI frame
-    % controlTorqueVector [nSats * 3, 1], [N*m] 
+    % controlTorqueVector [nSats * 3, 1], [N*m], Body frame 
 
     % spacecraft is a structure with spacecraft parameters
 
