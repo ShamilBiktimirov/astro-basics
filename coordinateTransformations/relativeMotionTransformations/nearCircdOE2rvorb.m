@@ -1,5 +1,5 @@
 function rvorb = nearCircdOE2rvorb(dOE, OEc)
-    
+
     % this function convert difference in orbital elements to relative state vector from chief to deputy satelite:
     % this works with Near-Circular Chief Orbit
     % used to map HCW constant to dOE
@@ -16,14 +16,12 @@ function rvorb = nearCircdOE2rvorb(dOE, OEc)
     % reference:
     % ANALYTICAL MECHANICs of AEROSPACE SYSTEMS by Hanspeter Schaub SPACECRAFT FORMATION FLYING chapter
 
-
     f0 = 0; % initial true anomaly
 
     a = OEc(1);
     f = OEc(6);
     i = OEc(3);
     theta = f + OEc(5);
-
 
 
     da = dOE(1);
@@ -34,7 +32,6 @@ function rvorb = nearCircdOE2rvorb(dOE, OEc)
     dM = dOE(6);
 
     thetaz = atan(di/(-sin(i) * dRAAN));
-
 
     rvorb(1, 1) = a * cos(f) * de + da;
     rvorb(2, 1) = (-2 * a * sin(f) * de) + (a * (dw + dM + cos(i) * dRAAN)) - (3/2 * (f - f0) * da);
