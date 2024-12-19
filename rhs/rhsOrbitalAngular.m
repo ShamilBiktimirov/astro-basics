@@ -1,4 +1,4 @@
-function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp)
+function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp, planetR)
 
     % input:
     % stateVector   [nSats * 13, 1], [m, m/s]
@@ -22,14 +22,8 @@ function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spa
 
     qwPrime = [quaternionDot'; angularVelocityDot];
 
-    rPrime = [rv(4:6); 0;0;0];
-    rNorm  = vecnorm(rv(1:3));
-
-    % Central gravity field
-    accelerationCg = [zeros(3, 1); -planetGp ./ (rNorm.^3) .* rv(1:3)];
-
     % rhs for two-body problem
-    rvPrime = rPrime + accelerationCg;
+    rvPrime = rhsOrbitalMotionLander(t, rv, planetGp, planetR);
 
     stateVectorPrime = [rvPrime; qwPrime];
 
