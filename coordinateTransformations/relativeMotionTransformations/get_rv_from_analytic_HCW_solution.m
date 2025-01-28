@@ -1,4 +1,4 @@
- function rv_HCW = get_rv_from_analytic_HCW_solution(target_rv_ECI, formation_geometry)
+function rv_HCW = get_rv_from_analytic_HCW_solution(target_rv_ECI, formation_geometry, varargin)
 
     % HCW solution is from [1]
     % 1. Writing with Sunlight: CubeSat Formation Control Using Aerodynamic
@@ -13,8 +13,20 @@
     % dy/dt =  n * c2 * cos(arg_of_lat + alpha);
     % dz/dt =  n * c1/2 * cos(arg_of_lat + alpha);
 
+    if nargin == 1
+        planetGp = Consts.muEarth;
+    elseif nargin == 3
+        if strcmpi(varargin(1), 'planetGp')
+            planetGp = cell2mat(varargin(2));
+        else
+            error('Improper function input');
+        end
+    elseif nargin > 3
+        error('Improrer function input');
+    end
+
     target_oe = rv2oe(target_rv_ECI);
-    mean_motion = sqrt(Consts.muEarth / target_oe(1)^3);
+    mean_motion = sqrt(planetGp / target_oe(1)^3);
     arg_of_lat = target_oe(8);
 
     c1 = formation_geometry(1,:);

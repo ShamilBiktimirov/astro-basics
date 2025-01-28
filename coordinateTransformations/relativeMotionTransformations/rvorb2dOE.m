@@ -18,6 +18,7 @@ function dOE = rvorb2dOE(rv, OEc)
     % reference:
     % ANALYTICAL MECHANICs of AEROSPACE SYSTEMS by Hanspeter Schaub SPACECRAFT FORMATION FLYING chapter
 
+    % TODO: check the function
     
     rvRVH = orbVHR2RVH(rv);
     a = OEc(1);
