@@ -23,6 +23,7 @@ function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spa
     qwPrime = [quaternionDot'; angularVelocityDot];
 
     % rhs for two-body problem
+    % TODO: make it for generalized primary body case
     rvPrime = rhsOrbitalMotionLander(t, rv, planetGp, planetR);
 
     stateVectorPrime = [rvPrime; qwPrime];

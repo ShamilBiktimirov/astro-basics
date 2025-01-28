@@ -84,7 +84,7 @@ while tCounter < simulation.simulationTime
     bodyFrameX = plot3([0, eXTransformed(1)], [0, eXTransformed(2)], [0, eXTransformed(3)], 'r', LineWidth=2);
     bodyFrameY = plot3([0, eYTransformed(1)], [0, eYTransformed(2)], [0, eYTransformed(3)], 'g', LineWidth=2);
     bodyFrameZ = plot3([0, eZTransformed(1)], [0, eZTransformed(2)], [0, eZTransformed(3)], 'b', LineWidth=2);
- 
+
     xVertices = verticesPositionsTransformedArray(1, :);
     yVertices = verticesPositionsTransformedArray(2, :);
     zVertices = verticesPositionsTransformedArray(3, :);
@@ -101,7 +101,7 @@ while tCounter < simulation.simulationTime
 end
 
 % visualization 
-rotationAnimationGif([l1; l2; l3], XArray(1:4, 1:30:end));
+rotationAnimationGif([l1; l2; l3], XArray(1:4, 1:30:end), repmat([1;0;0], 1, size(XArray, 2)));
 
 
 %% Functions
@@ -123,10 +123,7 @@ function M = calcControlTorqueSDot(eTarget, rSat_B, AngularStateVector)
     torqueDirection = cross(rSat_B, eTarget_B) / vecnorm(cross(rSat_B, eTarget_B));
     alpha = acos(dot(rSat_B, eTarget_B) / vecnorm(rSat_B) / vecnorm(eTarget_B));
 
-    % to eliminate only projection of angular velocity perp to required direction
-    % anglularVelocity_perp = cAngularVelocity* (angularVelocity_B - dot(angularVelocity_B, eTarget_B) * eTarget_B; % componenent of angular velocity perpendicular to target directions
-
-    M = cAngle * torqueDirection * alpha - cAngularVelocity * angularVelocity_B; % check if perpendicular do they coincide with alpha dir proj?
+    M = cAngle * torqueDirection * alpha - cAngularVelocity * angularVelocity_B;
 
     if vecnorm(M) > Mmax
         M = M / vecnorm(M) * Mmax;
