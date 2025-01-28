@@ -51,7 +51,7 @@ toc;
 stateVectorArrayLocal = stateVectorArrayLocal';
 
 fig1 = figure;
-hold on
+hold on;
 
 subplot(2, 4, [2 3])
 plot3(stateVectorArrayLocal(1, :), stateVectorArrayLocal(2, :), stateVectorArrayLocal(3, :));
@@ -59,27 +59,27 @@ xlabel("X, m")
 ylabel("Y, m")
 zlabel("Z, m")
 fontsize(20,"points")
-grid on
+grid on;
 
 subplot(2, 4, [5 6])
-hold on
-plot(tArrayLocal, stateVectorArrayLocal(4, :));
-plot(tArrayLocal, stateVectorArrayLocal(5, :));
-plot(tArrayLocal, stateVectorArrayLocal(6, :));
+hold on;
 plot(tArrayLocal, stateVectorArrayLocal(7, :));
-xlabel("t, s")
-ylabel("q")
-legend('q0', 'q1', 'q2', 'q3')
-fontsize(20,"points")
-grid on 
-
-subplot(2, 4, [7 8])
-hold on
 plot(tArrayLocal, stateVectorArrayLocal(8, :));
 plot(tArrayLocal, stateVectorArrayLocal(9, :));
 plot(tArrayLocal, stateVectorArrayLocal(10, :));
 xlabel("t, s")
-ylabel("w, rad/s")
-legend('wx', 'wy', 'wz')
+ylabel("q")
+legend('q0', 'q1', 'q2', 'q3')
 fontsize(20,"points")
-grid on 
+grid on;
+
+subplot(2, 4, [7 8])
+hold on;
+plot(tArrayLocal, stateVectorArrayLocal(11, :));
+plot(tArrayLocal, stateVectorArrayLocal(12, :));
+plot(tArrayLocal, stateVectorArrayLocal(13, :));
+xlabel("t, s")
+ylabel("\omega, rad/s")
+legend('\omega_x', '\omega_y', '\omega_z')
+fontsize(20,"points")
+grid on;
