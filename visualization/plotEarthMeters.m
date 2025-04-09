@@ -1,9 +1,10 @@
-function globe = plotEarthMeters(GMST0)
+function globe = plotEarthMeters(GMST0, imgResoultion)
 
     %% Function plots 3D Earth
 
     %% Options
     % GMST0  is  in radian
+    % imgResoultion either 1 or 10;
     npanels = 180;   % Number of globe panels around the equator deg/panel = 360/npanels
     alpha   = 1; % globe transparency level, 1 = opaque, through 0 = invisible
     % GMST0 = []; % Don't set up rotatable globe (ECEF)
@@ -14,7 +15,14 @@ function globe = plotEarthMeters(GMST0)
     % image.
 
     % image_file = 'http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Land_ocean_ice_2048.jpg/1024px-Land_ocean_ice_2048.jpg';
-    image_file = 'earthmap1k.jpg';
+    if imgResoultion == 1
+        image_file = 'earthmap1k.jpg';
+    elseif imgResoultion == 10
+        image_file = 'earthmap10k.jpg';
+    else
+        error('Please input 1 or 10 for Earth surface image resoultion')
+    end
+
     % Mean spherical earth
 
     erad = Consts.rEarth;     % equatorial radius (meters)
@@ -51,6 +59,6 @@ function globe = plotEarthMeters(GMST0)
     ylabel('y-axis, m');
     zlabel('z-axis, m');
     axis equal;
-    axis off;
+    % axis off;
 
 end
