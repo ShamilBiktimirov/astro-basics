@@ -1,4 +1,4 @@
-function plotEarth(varargin)
+function earth3D = plotEarth(varargin)
 
 % this function plots 3D Earth with different options
 % the user can specifiy the Julian Date or the GAMST for the plot
@@ -140,12 +140,12 @@ function plotEarth(varargin)
 
     [x, y, z] = ellipsoid(0, 0, 0, erad, erad, prad, npanels);
 
-    globe = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
+    earth3D = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
 
     % rotate Earth based on time
     hgx = hgtransform;
     set(hgx,'Matrix', makehgtform('zrotate',deg2rad(timeGAST)));
-    set(globe,'Parent',hgx);
+    set(earth3D,'Parent',hgx);
 
 
     %% Texturemap the globe
@@ -156,7 +156,7 @@ function plotEarth(varargin)
     % Set image as color data (cdata) property, and set face color to indicate
     % a texturemap, which Matlab expects to be in cdata. Turn off the mesh edges.
     hold on;
-    set(globe, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
+    set(earth3D, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
     xlabel('x-axis, m');
     ylabel('y-axis, m');
     zlabel('z-axis, m');
