@@ -26,6 +26,11 @@ function plotGroundTrack(rEcef)
     ylim([-90 90]);
     xlim([-180 180]);
 
+    yline(0, 'm', 'LineWidth', 1);
+
+    xline([-180:15:180], 'color', [0.7, 0.7, 0.7], LineWidth=0.5);
+    yline([-90:15:90], 'color', [0.7, 0.7, 0.7], LineWidth=0.5);
+
     xlabel('longitude \lambda, deg');
     ylabel('latitude \phi, deg');
 

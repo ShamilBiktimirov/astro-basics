@@ -1,4 +1,4 @@
-function oe = rv2oe(rv)
+function oe = rv2oe(rv, varargin)
 
     % Calculates osculating elements of the orbit
     % Inputs: [rx ;ry; rz; vx; vy; vz]
@@ -11,15 +11,26 @@ function oe = rv2oe(rv)
     r = rv(1:3);
     v = rv(4:6);
 
-    EarthGravity = Consts.muEarth;
+    if nargin == 1
+        planetGp = Consts.muEarth;
+    elseif nargin == 3
+        if strcmpi(varargin(1), 'planetGp')
+            planetGp = cell2mat(varargin(2));
+        else
+            error('Improper function input');
+        end
+    elseif nargin > 3
+        error('Improrer function input');
+    end
+
     tolerance = 1e-7;
 
     sigma = cross(r, v);
-    parameter = norm(sigma)^2 / EarthGravity;
+    parameter = norm(sigma)^2 / planetGp;
     r_norm = vecnorm(r);
     v_norm = vecnorm(v);
-    energyConstant = v_norm^2 - 2 * EarthGravity / r_norm;
-    eccentricity2 = 1 + energyConstant * parameter / EarthGravity;
+    energyConstant = v_norm^2 - 2 * planetGp / r_norm;
+    eccentricity2 = 1 + energyConstant * parameter / planetGp;
 
     if eccentricity2 >= 1
         warning('Eccentricity is greater than 1: the orbit is not elliptic!');
@@ -41,7 +52,7 @@ function oe = rv2oe(rv)
         cosInclination = 1;
         sinInclination = 0;
         cosAscendingNodeLongitude = 1;
-        sinAscendingNodeLongitude = 0;        
+        sinAscendingNodeLongitude = 0;
     else
         inclination = acos(cosInclination);
         sinInclination = sin(inclination);
@@ -76,7 +87,7 @@ function oe = rv2oe(rv)
             anomalyPlusPeriapsisArgument = 2 * pi - anomalyPlusPeriapsisArgument;
         end
         anomaly = anomalyPlusPeriapsisArgument;
-    
+
     else
 
         cosAnomaly = (parameter / r_norm - 1) / eccentricity;
@@ -102,25 +113,25 @@ function oe = rv2oe(rv)
           anomalyPlusPeriapsisArgument = 2 * pi - anomalyPlusPeriapsisArgument;
         end
         periapsisArgument = anomalyPlusPeriapsisArgument - anomaly;
-        if (periapsisArgument <= 0) 
+        if (periapsisArgument <= 0)
           periapsisArgument = periapsisArgument + 2 * pi;
         end
     end
-        
+
         if ~isreal(eccentricity)
             error('WTF');
         end
         [~, MeanAnomaly] = newtonnu (eccentricity, anomaly);
         ArgumentofLatitude = anomalyPlusPeriapsisArgument;
         try
-        TrueMeanAnomaly = mod(periapsisArgument + MeanAnomaly,2*pi);        
+        TrueMeanAnomaly = mod(periapsisArgument + MeanAnomaly,2*pi);
         catch
             display(periapsisArgument, MeanAnomaly);
         end
         if 2*pi - ascendingNodeLongitude < tolerance 
             ascendingNodeLongitude = 0;
         end
-        
+
         if 2*pi - periapsisArgument < tolerance
             periapsisArgument = 0;
         end
@@ -128,11 +139,11 @@ function oe = rv2oe(rv)
         if 2*pi - anomaly < tolerance
             anomaly = 0;
         end
-        
+
         if 2*pi - ArgumentofLatitude < tolerance
             ArgumentofLatitude = 0;
         end
-        
+
         oe = [semimajorAxis;
               eccentricity;
               inclination;
@@ -142,4 +153,5 @@ function oe = rv2oe(rv)
               MeanAnomaly;
               ArgumentofLatitude;
               TrueMeanAnomaly];
+
 end

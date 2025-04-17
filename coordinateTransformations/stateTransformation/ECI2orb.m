@@ -13,7 +13,9 @@ function rvChaserOrb = ECI2orb(rvTargetEci, rvChaserEci)
     % Output:
     % rvChaserOrb - [6, tArrayLength]
 
-    meanMotion = sqrt(Consts.muEarth / vecnorm(rvTargetEci(1:3, 1))^3);
+    % h = [r, v] = r^2 * phi'
+    angularMomentumSpecific = norm(cross(rvTargetEci(1:3), rvTargetEci(4:6)));
+    tangentialVelocity = angularMomentumSpecific / norm(rvTargetEci(1:3))^2;
 
     rotationMatrixI2O = orb2EciMatrix(rvTargetEci);
     rotationMatrixO2I = permute(rotationMatrixI2O, [2, 1, 3]);
@@ -21,7 +23,7 @@ function rvChaserOrb = ECI2orb(rvTargetEci, rvChaserEci)
     for timeIdx = 1:size(rvTargetEci, 2)
 
         r_chaser_orb = rotationMatrixO2I(:, :, timeIdx) * (rvChaserEci(1:3, timeIdx) - rvTargetEci(1:3, timeIdx));
-        v_chaser_orb = rotationMatrixO2I(:, :, timeIdx) * (rvChaserEci(4:6, timeIdx) - rvTargetEci(4:6, timeIdx)) -  cross([0; meanMotion; 0], r_chaser_orb);
+        v_chaser_orb = rotationMatrixO2I(:, :, timeIdx) * (rvChaserEci(4:6, timeIdx) - rvTargetEci(4:6, timeIdx)) -  cross([0; tangentialVelocity; 0], r_chaser_orb);
 
         rvChaserOrb(:, timeIdx) = [r_chaser_orb; v_chaser_orb];
     end

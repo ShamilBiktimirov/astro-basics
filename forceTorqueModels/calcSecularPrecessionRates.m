@@ -22,8 +22,8 @@ function [raanSecularPrecessionRate, aopSecularPrecessionRate, ma0SecularPrecess
 
     c = 3 / 2 * sqrt(Consts.muEarth) * Consts.rEarthEquatorial ^ 2 * Consts.earthJ2;
 
-    raanSecularPrecessionRate = - c / ((1 - eMean^2) ^ 2 * aMean ^ (7 / 2)) * cos(iMean);
-    aopSecularPrecessionRate  = - c / ((1 - eMean^2) ^ 2 * aMean ^ (7 / 2)) * (5 / 2 * sin(iMean) ^ 2 - 2);
-    ma0SecularPrecessionRate  = - c / ((1 - eMean^2) ^ 2 * aMean ^ (7 / 2)) * sqrt(1 - eMean ^ 2) * (3 / 2 * sin(iMean) ^ 2 - 1);
+    raanSecularPrecessionRate = - c ./ ((1 - eMean .^ 2) .^ 2 .* aMean .^ (7 / 2)) .* cos(iMean);
+    aopSecularPrecessionRate  = - c ./ ((1 - eMean .^ 2) .^ 2 .* aMean .^ (7 / 2)) .* (5 / 2 * sin(iMean) .^ 2 - 2);
+    ma0SecularPrecessionRate  = - c ./ ((1 - eMean .^ 2) .^ 2 .* aMean .^ (7 / 2)) .* sqrt(1 - eMean .^ 2) .* (3 / 2 * sin(iMean) .^ 2 - 1);
 
 end
