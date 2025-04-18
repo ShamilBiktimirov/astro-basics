@@ -1,19 +1,26 @@
 function angleOut = wrapToPiCustom(angleIn)
 
-    angleOut = [];
-    
-    for idx = 1:length(angleIn)
+    % The function converts an angle in radian ranging from 0 to 2pi to range from -pi to pi
+    % Works for array of input values. If value is more than 2pi it considers the remainder after division to 2pi
 
-            if abs(angleIn(idx)) > pi
-                if angleIn(idx) < 0
-                    angleOut(idx) = 2 * pi + angleIn(idx);
-                elseif angleIn > 0
-                    angleOut(idx) = -2 * pi + angleIn(idx);
-                end
-            else
-                angleOut(idx) = angleIn(idx);
-            end
+
+    angleOut = [];
+
+    if all(angleIn <= pi & angleIn >= -pi)
+        % check if angles suite the range
+        angleOut = angleIn;
+
+    else
+
+        angleOut = rem(angleIn, 2 * pi); % make angles in a range from -2*pi to 2*pi
+        idxNegativeAngle = find(angleOut < 0);
+        angleOut(idxNegativeAngle) = 2 * pi + angleOut(idxNegativeAngle); % make angles in a range from 0 to 2*pi
+
+        idxBiggerThanPi = find(angleOut > pi);
+        angleOut(idxBiggerThanPi) = - 2 * pi + angleOut(idxBiggerThanPi);
 
     end
+
+    assert(all(angleOut <= pi & angleOut >= -pi), "angles does not satisfy range from -pi to pi");
 
 end

@@ -13,6 +13,6 @@ function period = calcPeriodKeplerian(a)
     % Output:
     % period [s], Keplerian orbit period
 
-    period = 2 * pi * sqrt(a.^3 ./ Consts.muEarth);
+    period = 2 * pi * sqrt(a^3 / Consts.muEarth);
 
 end
