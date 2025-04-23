@@ -2,9 +2,14 @@ function earth3D = plotEarth(varargin)
 
 % this function plots 3D Earth with different options
 % the user can specifiy the Julian Date or the GAMST for the plot
-% if time is not provided, the default will be 'now'
+% if time is not provided, the default will be 'now' in UTC
 % umbra will be added to the plot by default based on time
 % user can switch off umbra, see below the optional inputs
+% ECI and ECEF axes are added to the plot by default
+% axes can be switched off
+% view is [0, -1, 0]
+
+
 
 
 % optional inputs:
@@ -15,27 +20,33 @@ function earth3D = plotEarth(varargin)
 % imageResolution: Earth surface image resoultion
 % imageResolution: can be '1k' or '10k', default is '1k'
 
-% timeJD: Julian Date can be specified as datetime or Julian Date
-% timeGAST: Greenwich Apparent Sidereal Time, deg
+% time: can be specified as datetime or Julian Date
+% GAST: Greenwich Apparent Sidereal Time, deg
+% GAST is the angle from Greenwich meridian to true vernal Equinox
+% True vernal Equinox is the intersection between the true equator and Ecliptic plane
 
 % umbra: Earth shadow
 % umbra: can be 0 or 1, by default is 1 which means shadow is on. 
 
+% showAxes: to show eci and ecef axes 
+% showAxes: can be 0 or 1, by default is 1 which means axes is on. 
 
 %% checking optional inputs
         parser = inputParser;
 
         defaultUnit = 'm';
         defaultImageRes = '1k';
-        defaultTimeJD = juliandate(datetime('now'));
-        defaultTimeGAST = JD2GAST(defaultTimeJD);
+        defaultTime = juliandate(datetime('now'));
+        defaultGAST = JD2GAST(defaultTime);
         defaultUmbra = 1;
+        defaultShowAxes = 1;
 
         addOptional(parser,'plotUnit', defaultUnit);
         addOptional(parser,'imageResolution', defaultImageRes);
-        addOptional(parser,'timeJD', defaultTimeJD);
-        addOptional(parser,'timeGAST', defaultTimeGAST);
+        addOptional(parser,'time', defaultTime);
+        addOptional(parser,'GAST', defaultGAST);
         addOptional(parser,'umbra', defaultUmbra);
+        addOptional(parser,'showAxes', defaultShowAxes);
 
 
         % Parse the inputs
@@ -45,57 +56,58 @@ function earth3D = plotEarth(varargin)
         usedDefaults = parser.UsingDefaults;
         
         % Determine what the user specified
-        userSpecified.timeJD = ~ismember('timeJD', usedDefaults);
-        userSpecified.timeGAST = ~ismember('timeGAST', usedDefaults);
+        userSpecified.time = ~ismember('time', usedDefaults);
+        userSpecified.GAST = ~ismember('GAST', usedDefaults);
 
         % Extract parsed values
         plotUnit = args.plotUnit;
         imageResolution = args.imageResolution;
         umbra = args.umbra;
+        showAxes = args.showAxes;
 
 
         % check timeJD and timeGD
-        if userSpecified.timeJD == 0 && userSpecified.timeGAST == 0
-            timeJD = args.timeJD;
-            timeGAST = args.timeGAST;
+        if userSpecified.time == 0 && userSpecified.GAST == 0
+            time = args.time;
+            GAST = args.GAST;
             
-        elseif userSpecified.timeJD == 1 && userSpecified.timeGAST == 0
+        elseif userSpecified.time == 1 && userSpecified.GAST == 0
 
-            timeJD = args.timeJD;
+            time = args.time;
 
            % Check if timeJD is provided as datetime or Julian Date
-            if isa(timeJD, 'datetime')
+            if isa(time, 'datetime')
                 % If timeJD is a datetime, convert it to Julian Date
-                timeJD = juliandate(timeJD);
-            elseif ~isnumeric(timeJD)
-                error('The timeJD must be either a datetime or a numeric Julian date.');
+                time = juliandate(time);
+            elseif ~isnumeric(time)
+                error('The time must be either a datetime or a numeric Julian date.');
             end
 
-            timeGAST = JD2GAST(timeJD);
+            GAST = JD2GAST(time);
 
-        elseif userSpecified.timeJD == 0 && userSpecified.timeGAST == 1
-                error('timeJD is not provided');
+        elseif userSpecified.time == 0 && userSpecified.GAST == 1
+                error('time is not provided');
 
-        elseif userSpecified.timeJD == 1 && userSpecified.timeGAST == 1
+        elseif userSpecified.time == 1 && userSpecified.GAST == 1
 
             % If both timeJD and timeGD are provided, check if they match
-            timeJD = args.timeJD;
+            time = args.time;
 
              % Check if timeJD is provided as datetime or Julian Date
-            if isa(timeJD, 'datetime')
+            if isa(time, 'datetime')
                 % If timeJD is a datetime, convert it to Julian Date
-                timeJD = juliandate(timeJD);
-            elseif ~isnumeric(timeJD)
-                error('The timeJD must be either a datetime or a numeric Julian date.');
+                time = juliandate(time);
+            elseif ~isnumeric(time)
+                error('The time must be either a datetime or a numeric Julian date.');
             end
 
-            timeGAST = args.timeGAST;
+            GAST = args.GAST;
 
             % Convert timeGD back to Julian Date to check if they match
-            calculatedGD = JD2GAST(timeJD); % deg
+            calculatedGD = JD2GAST(time); % deg
             
-            if abs(calculatedGD - timeGAST) > 1e-5  % Small tolerance
-                error('The timeJD and timeGD values do not match. Please provide consistent values.');
+            if abs(calculatedGD - GAST) > 1e-5  % Small tolerance
+                error('The time and GAST values do not match. Please provide consistent values.');
             end
         end
 
@@ -114,8 +126,8 @@ function earth3D = plotEarth(varargin)
         % which is 'now' since time is not provided by the user. Also,
         % umbra will be based on that.
 
-        if userSpecified.timeJD == 0 && userSpecified.timeGAST == 0
-            warning('The 3D plot of Earth is at current time (the default) and umbra is also based on it, if you need specific time please specify timeJD in the input')
+        if userSpecified.time == 0 && userSpecified.GAST == 0
+            warning('The 3D plot of Earth is at current time (the default) and umbra is also based on it, if you need specific time please specify time in the input')
         end
 
     %% creating figure
@@ -140,11 +152,14 @@ function earth3D = plotEarth(varargin)
 
     [x, y, z] = ellipsoid(0, 0, 0, erad, erad, prad, npanels);
 
+    fig1 = figure;
+    hold on;
+
     earth3D = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
 
     % rotate Earth based on time
     hgx = hgtransform;
-    set(hgx,'Matrix', makehgtform('zrotate',deg2rad(timeGAST)));
+    set(hgx,'Matrix', makehgtform('zrotate',deg2rad(GAST)));
     set(earth3D,'Parent',hgx);
 
 
@@ -155,21 +170,46 @@ function earth3D = plotEarth(varargin)
 
     % Set image as color data (cdata) property, and set face color to indicate
     % a texturemap, which Matlab expects to be in cdata. Turn off the mesh edges.
-    hold on;
     set(earth3D, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
     xlabel('x-axis, m');
     ylabel('y-axis, m');
     zlabel('z-axis, m');
     axis equal;
     axis off;
-
+    view([0, -1, 0])
     %% define sun direction and plot Shadow
 
+    axisLength = 7500e3;
+
     if umbra == 1
-        [eSun, sunAzimuth, sunElev] = sun(timeJD);
+        [eSun, sunAzimuth, sunElev] = sun(time);
         % plot light as sun 
         light("Style","infinite","Position", eSun * 10000e20);
         material dull;  % More diffuse lighting
+
+        % plot sun vector
+        plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y')
+
     end
+
+    if showAxes == 1      
+        % plot eci frame
+        hold on
+        plot3([0 1 * axisLength], [0 0 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'r')
+        plot3([0  0 * axisLength], [0  1 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'g')
+        plot3([0 0 * axisLength], [0 0 * axisLength], [0 1 * axisLength], 'LineWidth', 2, 'Color', 'b')
+
+        % plot ecef frame
+        xEcef = rotationZ(deg2rad(GAST)) * [1; 0; 0];
+        yEcef = rotationZ(deg2rad(GAST)) * [0; 1; 0];
+        zEcef = [0; 0; 1];
+        
+        xecefPlot = plot3([0, xEcef(1) * axisLength], [0, xEcef(2) * axisLength], [0, xEcef(3) * axisLength], 'LineWidth', 1, 'Color', 'r', 'LineStyle', '--');
+        yecefPlot = plot3([0  yEcef(1) * axisLength], [0  yEcef(2) * axisLength], [0 yEcef(3) * axisLength], 'LineWidth', 1, 'Color', 'g', 'LineStyle', '--');
+        zecefPlot = plot3([0 zEcef(1) * axisLength], [0 zEcef(2) * axisLength], [0 zEcef(3) * axisLength], 'LineWidth', 1, 'Color', 'b', 'LineStyle', '--');
+
+    end
+
+
 
 end
