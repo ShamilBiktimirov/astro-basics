@@ -25,6 +25,7 @@ function earth3D = plotEarth(varargin)
     % Comments:
     % A user can specifiy the time in datetime UTC, in julian days or alternatively sat GAST for the plot
     % if time is not provided, the default will be 'now' in UTC
+    % if GAST provided without time then umbra will be off
 
     % umbra will be added to the plot by default based on time
     % user can switch off umbra, see below the optional inputs
@@ -32,7 +33,7 @@ function earth3D = plotEarth(varargin)
     % ECI and ECEF axes are added to the plot by default and it follows
     % either time or GAST or uses current time if non of it is not specified
     % axes can be switched off
-    % view is [0, -1, 0]
+    % view([1, 1, 0.5])
 
 
     %% checking optional inputs
@@ -90,7 +91,9 @@ function earth3D = plotEarth(varargin)
         GAST = JD2GAST(time);
 
     elseif userSpecified.time == 0 && userSpecified.GAST == 1
-            error('time is not provided');
+        GAST = args.GAST;
+        umbra = 0;
+        warning('Umbra is switched off since GAST is provided without time');
 
     elseif userSpecified.time == 1 && userSpecified.GAST == 1
 
