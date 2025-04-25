@@ -31,8 +31,8 @@ function [betaAa, betaBeam] = calcBetaAngles(orbitRadius, spacecraft)
 
     betaBeam = pi/2 - spacecraft.instrumentFov - acos(orbitRadius / Consts.rEarth * sin(spacecraft.instrumentFov));
 
-    if betaBeam > betaAa
-        error('footprint exceeding access area!');
+    if (betaBeam - betaAa) > 1e-14
+         error('footprint exceeding access area!')
     end
 
 end
