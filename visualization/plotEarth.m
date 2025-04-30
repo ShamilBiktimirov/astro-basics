@@ -45,6 +45,8 @@ function earth3D = plotEarth(varargin)
     defaultGAST = JD2GAST(defaultTime);
     defaultUmbra = 1;
     defaultShowAxes = 1;
+    defaultView = [1, 1, 0.5];
+
 
     addOptional(parser,'plotUnit', defaultUnit);
     addOptional(parser,'imageResolution', defaultImageRes);
@@ -52,6 +54,7 @@ function earth3D = plotEarth(varargin)
     addOptional(parser,'GAST', defaultGAST);
     addOptional(parser,'umbra', defaultUmbra);
     addOptional(parser,'showAxes', defaultShowAxes);
+    addOptional(parser,'figview', defaultView);
 
 
     % Parse the inputs
@@ -69,6 +72,7 @@ function earth3D = plotEarth(varargin)
     imageResolution = args.imageResolution;
     umbra = args.umbra;
     showAxes = args.showAxes;
+    figview = args.figview;
 
 
     % check timeJD and timeGD
@@ -183,7 +187,7 @@ function earth3D = plotEarth(varargin)
     zlabel('z-axis, m');
     axis equal;
     axis off;
-    view([1, 1, 0.5])
+    view(figview)
     %% define sun direction and plot Shadow
 
     axisLength = 7500e3;
