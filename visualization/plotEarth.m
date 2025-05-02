@@ -163,7 +163,6 @@ function earth3D = plotEarth(varargin)
 
     [x, y, z] = ellipsoid(0, 0, 0, erad, erad, prad, npanels);
 
-    fig1 = figure;
     hold on;
 
     earth3D = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
