@@ -22,6 +22,9 @@ function earth3D = plotEarth(varargin)
     % "showAxes": to show ECI and ECEF axes 
     % "showAxes": can be 0 or 1, by default is 1 which means axes is on. 
 
+    % "figView": to specify view direction for the figure
+    % "figView": [x, y, z], default [1, 1, 0.5]
+
     % Comments:
     % A user can specifiy the time in datetime UTC, in julian days or alternatively sat GAST for the plot
     % if time is not provided, the default will be 'now' in UTC
@@ -33,7 +36,8 @@ function earth3D = plotEarth(varargin)
     % ECI and ECEF axes are added to the plot by default and it follows
     % either time or GAST or uses current time if non of it is not specified
     % axes can be switched off
-    % view([1, 1, 0.5])
+    % default view direction is defined by vector [1, 1, 0.5] and can be
+    % adjusted
 
 
     %% checking optional inputs
