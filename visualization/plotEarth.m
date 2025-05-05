@@ -22,6 +22,9 @@ function earth3D = plotEarth(varargin)
     % "showAxes": to show ECI and ECEF axes 
     % "showAxes": can be 0 or 1, by default is 1 which means axes is on. 
 
+    % "figView": to specify view direction for the figure
+    % "figView": [x, y, z], default [1, 1, 0.5]
+
     % Comments:
     % A user can specifiy the time in datetime UTC, in julian days or alternatively sat GAST for the plot
     % if time is not provided, the default will be 'now' in UTC
@@ -33,7 +36,8 @@ function earth3D = plotEarth(varargin)
     % ECI and ECEF axes are added to the plot by default and it follows
     % either time or GAST or uses current time if non of it is not specified
     % axes can be switched off
-    % view([1, 1, 0.5])
+    % default view direction is defined by vector [1, 1, 0.5] and can be
+    % adjusted
 
 
     %% checking optional inputs
@@ -45,6 +49,8 @@ function earth3D = plotEarth(varargin)
     defaultGAST = JD2GAST(defaultTime);
     defaultUmbra = 1;
     defaultShowAxes = 1;
+    defaultView = [1, 1, 0.5];
+
 
     addOptional(parser,'plotUnit', defaultUnit);
     addOptional(parser,'imageResolution', defaultImageRes);
@@ -52,6 +58,7 @@ function earth3D = plotEarth(varargin)
     addOptional(parser,'GAST', defaultGAST);
     addOptional(parser,'umbra', defaultUmbra);
     addOptional(parser,'showAxes', defaultShowAxes);
+    addOptional(parser,'figview', defaultView);
 
 
     % Parse the inputs
@@ -69,6 +76,7 @@ function earth3D = plotEarth(varargin)
     imageResolution = args.imageResolution;
     umbra = args.umbra;
     showAxes = args.showAxes;
+    figview = args.figview;
 
 
     % check timeJD and timeGD
@@ -159,7 +167,6 @@ function earth3D = plotEarth(varargin)
 
     [x, y, z] = ellipsoid(0, 0, 0, erad, erad, prad, npanels);
 
-    fig1 = figure;
     hold on;
 
     earth3D = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
@@ -183,7 +190,7 @@ function earth3D = plotEarth(varargin)
     zlabel('z-axis, m');
     axis equal;
     axis off;
-    view([1, 1, 0.5])
+    view(figview)
     %% define sun direction and plot Shadow
 
     axisLength = 7500e3;
