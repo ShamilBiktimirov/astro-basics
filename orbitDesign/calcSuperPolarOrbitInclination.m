@@ -2,7 +2,6 @@ function iSuperPolar = calcSuperPolarOrbitInclination(sma)
 
     global sma
 
-
     % Function calculates inclination of super polar orbit* - the orbit with apparent inclination of 90
     % circular orbit case is considered
 
@@ -10,18 +9,16 @@ function iSuperPolar = calcSuperPolarOrbitInclination(sma)
     % sma, m
 
     % Output:
-    % inclination, rad
+    % iSuperPolar, rad
 
     iLeft = deg2rad(70);
     iRight = deg2rad(110);
-
-    tolerance = 1e-5; % rad
 
     f = @fSuperPolarOrbit;
 
     iSuperPolar = bisection_method(f, iLeft, iRight);
 
-    assert(abs(calcApparentInclination([sma; 0; iSuperPolar; 0; 0; 0]) - pi/2) < 1e-10, "Super Polar orbit is not calculated");
+    assert(abs(calcApparentInclination([sma; 0; iSuperPolar; 0; 0; 0]) - pi/2) < 1e-10, "Super Polar orbit is not calculated correctly");
 
     function error = fSuperPolarOrbit(i)
 
