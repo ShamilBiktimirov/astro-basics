@@ -1,4 +1,4 @@
-function period = calcPeriodKeplerian(a)
+function period = calcPeriodKeplerian(a, varargin)
 
     % Function calculates Keplerian orbital period for a given semi-major axis
     % Note: The orbital parameter should be mean if working with J2 perturbed dynamics for proper period estimate
@@ -13,6 +13,19 @@ function period = calcPeriodKeplerian(a)
     % Output:
     % period [s], Keplerian orbit period
 
-    period = 2 * pi * sqrt(a^3 / Consts.muEarth);
+    if nargin == 1
+        planetGp = Consts.muEarth;
+    elseif nargin == 3
+        if strcmpi(varargin(1), 'planetGp')
+            planetGp = cell2mat(varargin(2));
+        else
+            error('Improper function input');
+        end
+    elseif nargin > 3
+        error('Improrer function input');
+    end
+
+
+    period = 2 * pi * sqrt(a^3 / planetGp);
 
 end
