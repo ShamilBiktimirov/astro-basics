@@ -30,7 +30,7 @@ function losFlag = calcLosCondition(r1, r2, varargin)
     end
 
 
-    %% Calculating LOS condition by comparing current angle better r1 and r2 with critical one for the central body radius
+    %% Calculating LOS condition by comparing current angle between r1 and r2 with the critical one for the central body radius
 
     alfaCritical = acos(rCentralBody / norm(r1)) + acos(rCentralBody / norm(r2));
     beta = acos(dot(r1, r2) / norm(r1) / norm(r2));
