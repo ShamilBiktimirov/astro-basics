@@ -12,7 +12,7 @@ function losFlag = calcLosCondition(r1, r2, varargin)
     % rCentralBody, m, radius of a central body
 
     % Reference: D. Vallado, Fundamentals of Astrodynamics and Application,
-    % section 5.3.3 Application: Sight and Light
+    % section 5.3.3 Application: Sight and Light - First approach with trigonometric functions
 
     %%  checking inputs
     parser = inputParser;
