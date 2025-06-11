@@ -160,7 +160,14 @@ function earth3D = plotEarth(varargin)
     % Mean spherical earth
     erad = Consts.rEarth;     % equatorial radius (meters)
     prad = Consts.rEarth;     % polar radius (meters)
+    axisLength = 7500e3;
+    %% check plotUnit
 
+    if strcmp(plotUnit, 'km')
+        erad = erad / 1000;
+        prad = prad / 1000;
+        axisLength = axisLength / 1000;
+    end
     %% Create wireframe globe
 
     % Create a 3D meshgrid of the sphere points using the ellipsoid function
@@ -185,15 +192,10 @@ function earth3D = plotEarth(varargin)
     % Set image as color data (cdata) property, and set face color to indicate
     % a texturemap, which Matlab expects to be in cdata. Turn off the mesh edges.
     set(earth3D, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
-    xlabel('x-axis, m');
-    ylabel('y-axis, m');
-    zlabel('z-axis, m');
     axis equal;
     axis off;
     view(figview)
     %% define sun direction and plot Shadow
-
-    axisLength = 7500e3;
 
     if umbra == 1
         [eSun, sunAzimuth, sunElev] = sun(time);
