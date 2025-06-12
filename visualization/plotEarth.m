@@ -160,7 +160,14 @@ function earth3D = plotEarth(varargin)
     % Mean spherical earth
     erad = Consts.rEarth;     % equatorial radius (meters)
     prad = Consts.rEarth;     % polar radius (meters)
+    axisLength = 7500e3;
+    %% check plotUnit
 
+    if strcmp(plotUnit, 'km')
+        erad = erad / 1000;
+        prad = prad / 1000;
+        axisLength = axisLength / 1000;
+    end
     %% Create wireframe globe
 
     % Create a 3D meshgrid of the sphere points using the ellipsoid function
@@ -185,33 +192,16 @@ function earth3D = plotEarth(varargin)
     % Set image as color data (cdata) property, and set face color to indicate
     % a texturemap, which Matlab expects to be in cdata. Turn off the mesh edges.
     set(earth3D, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
-    xlabel('x-axis, m');
-    ylabel('y-axis, m');
-    zlabel('z-axis, m');
     axis equal;
     axis off;
     view(figview)
     %% define sun direction and plot Shadow
-
-    axisLength = 7500e3;
-
-    if umbra == 1
-        [eSun, sunAzimuth, sunElev] = sun(time);
-        % plot light as sun 
-        light("Style","infinite","Position", eSun * 10000e20);
-        material dull;  % More diffuse lighting
-
-        % plot sun vector
-        plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y')
-
-    end
-
     if showAxes == 1
         % plot eci frame
         hold on
-        plot3([0 1 * axisLength], [0 0 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'r')
-        plot3([0  0 * axisLength], [0  1 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'g')
-        plot3([0 0 * axisLength], [0 0 * axisLength], [0 1 * axisLength], 'LineWidth', 2, 'Color', 'b')
+        xeciPlot = plot3([0 1 * axisLength], [0 0 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'r');
+        yeciPlot = plot3([0  0 * axisLength], [0  1 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'g');
+        zeciPlot = plot3([0 0 * axisLength], [0 0 * axisLength], [0 1 * axisLength], 'LineWidth', 2, 'Color', 'b');
 
         % plot ecef frame
         xEcef = rotationZ(deg2rad(GAST)) * [1; 0; 0];
@@ -224,5 +214,18 @@ function earth3D = plotEarth(varargin)
 
     end
 
+
+    if umbra == 1
+        [eSun, sunAzimuth, sunElev] = sun(time);
+        % plot light as sun 
+        light("Style","infinite","Position", eSun * 10000e20);
+        material dull;  % More diffuse lighting
+    
+        % plot sun vector
+        sunVecPlot = plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y');
+        legend([xeciPlot, xecefPlot, sunVecPlot], 'ECI X-axis', 'ECEF X-axis', 'Sun vector')
+    else
+        legend([xeciPlot, xecefPlot], 'ECI X-axis', 'ECEF X-axis')
+    end
 
 end
