@@ -73,7 +73,7 @@ classdef Consts
         goldenRatio      = (1 + sqrt(5)) / 2                                % golden ratio, []
         year2day         = 365;
 
-        gravitationalConstant = 6.6743e-11;                                 % m^3 / kg^2 / s^2
+        gravitationalConstant = 6.6743e-11;                                 % m^3 / kg / s^2
 
     end
 
