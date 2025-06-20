@@ -34,6 +34,7 @@ classdef Consts
         muNeptune        = 102.4092 * 6.6743e-11;
 
         muSun            = 132712440017.987 * 10^9;                         % Sun gravitational parameter, [m3/s2]
+        muSunAuYear      = Consts.muSun / Consts.astronomicUnit^3 * (2 * pi / Consts.earthMeanMotion)^2; % Sun mu in au^3/year^2
         muMoon           = 4902.800066 * 1e9;                               % Moon standard graviational parameter, [m^3 / s^2]
 
         muJustitia       = 4.37e6;                                          % Justitia asteroid gravitational parameter, [m^3 / s^2]
@@ -56,6 +57,7 @@ classdef Consts
 
         earthMeanMotion  = 1.99098367476852e-07                             % Earth mean motion, [rad/s]
         gravitationalAcceleration = 9.80665;                                % gravitational acceleration on Earth, [m/s^2]
+        gravitationalAccelerationAuYear = Consts.gravitationalAcceleration / Consts.astronomicUnit * (2 * pi / Consts.earthMeanMotion)^2
         solarRadiationPressure    = 4.57e-6;                                % solar radiation pressure, [N/m^2]
         karmanLineHeight          = 100e3;                                  % Karman line - end of life altitude, [m]
         sunlightIntensity         = 1370;                                   % Sunlight intensity at Earth orbit, W/m^2
