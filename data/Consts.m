@@ -21,6 +21,7 @@ classdef Consts
         rEarthEquatorial   = 6.378136300e6;
         rJupiterEquatorial = 71492e3;
 
+        rSun = 6.9634e8; % Nominal solar radius, unit: m
 
         %% Planetary gravitational parameter, [m^3/s^2]
         % Source: https://ssd.jpl.nasa.gov/planets/phys_par.html#refs
@@ -73,7 +74,13 @@ classdef Consts
         goldenRatio      = (1 + sqrt(5)) / 2                                % golden ratio, []
         year2day         = 365;
 
-        gravitationalConstant = 6.6743e-11;                                 % m^3 / kg^2 / s^2
+        %% General physical constants
+        gravitationalConstant = 6.6743e-11;                                 % m^3 / kg / s^2
+        hPlank = 6.62607015e-34; % Planck's constant, unit: Js
+        kBoltzmann = 1.38065e-23; % Boltzmann%s constant, unit: m^2 kg s^−2 K^−1
+        speedOfLight = 299792458; % speed of light, unit m/s
+        temperatureSun = 5778; % Effective blackbody solar temperature, unit: K
+
 
     end
 
