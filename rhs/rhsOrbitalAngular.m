@@ -1,4 +1,4 @@
-function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp, planetR)
+function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp)
 
     % input:
     % stateVector   [nSats * 13, 1], [m, m/s]
@@ -18,13 +18,13 @@ function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spa
     quaternionDot  = 1 / 2 * quatmultiply(unitQuaternion', [0; qw(5:7)]'); % Poisson equation
 
     angularVelocityDot = -intertiaTensorInverse * cross(qw(5:7), spacecraft.inertiaTensor * qw(5:7)) + ...
-                         intertiaTensorInverse * controlTorque; % Eulear equation
+                         intertiaTensorInverse * controlTorque; % Euler equation
 
     qwPrime = [quaternionDot'; angularVelocityDot];
 
     % rhs for two-body problem
     % TODO: make it for generalized primary body case
-    rvPrime = rhsOrbitalMotionLander(t, rv, planetGp, planetR);
+    rvPrime = rhsOrbitalMotionLander(t, rv, planetGp);
 
     stateVectorPrime = [rvPrime; qwPrime];
 
