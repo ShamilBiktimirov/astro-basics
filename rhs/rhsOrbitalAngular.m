@@ -27,7 +27,7 @@ function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spa
 
     if nargin == 5
         % two-body problem equations of motion
-        rvPrime = rhsOrbitalMotionLander(t, rv, planetGp, varargin);
+        rvPrime = rhsOrbitalMotionLander(t, rv, planetGp);
 
     elseif nargin == 9
         % precise gravity field
