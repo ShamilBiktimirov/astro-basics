@@ -52,15 +52,7 @@ tic;
 toc;
 stateVectorArrayLocal = stateVectorArrayLocal';
 
-% visualization
 [verticesPositionsBArray, linksArray] = calcParallelepidedVecticesPositions([150e-3, 150e-3, 300e-3]);
-
-% patch('Vertices', verticesPositionsBArray', ...
-%         'Faces', linksArray, ...
-%         'FaceColor', [0.5 0.5 0.5], ...
-%         'EdgeColor', [0.2 0.2 0.2], ...
-%         'EdgeAlpha', 0.15);
-% axis equal;
 
 bodyFixedAxesB = eye(3) / 2;
 
