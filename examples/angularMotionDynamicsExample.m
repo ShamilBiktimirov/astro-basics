@@ -77,50 +77,73 @@ plot(tArrayLocal, omegaI(2, :), 'g');
 plot(tArrayLocal, omegaI(3, :), 'b');
 
 
-
 fig1 = figure;
-hold on;
+
+ax1 = subplot(2, 2, [1 3]);
+hold(ax1, 'on');
+plotEarth();
+plot3(stateVectorArrayLocal(1, :), stateVectorArrayLocal(2, :), stateVectorArrayLocal(3, :), '.k', 'MarkerSize', 5, 'HandleVisibility', 'off');
+satLocalPositionPlot = plot3(stateVectorArrayLocal(1, 1), stateVectorArrayLocal(2, 1), stateVectorArrayLocal(3, 1), 'or', 'MarkerSize', 5, 'LineWidth', 3, 'HandleVisibility', 'off');
+
+axisLength = norm(stateVectorArrayLocal(1:3, 1));
+axis([-axisLength axisLength -axisLength axisLength -axisLength axisLength]);
+
+ax2 = subplot(2, 2, [2 4]);
+hold(ax2, 'on');
+view([1, 1, 1]);
+axis off;
+axis equal;
+
+pltX = plot3([0, 1/2], [0, 0], [0, 0], 'r', 'LineWidth', 2);
+pltY = plot3([0, 0], [0, 1/2], [0, 0], 'g', 'LineWidth', 2);
+pltZ = plot3([0, 0], [0, 0], [0, 1/2], 'b', 'LineWidth', 2);
+
+dcm = quat2dcm(stateVectorArrayLocal(7:10, 1)');
+dcm = dcm';
+verticesPositionsIArray = dcm * verticesPositionsBArray;
+bodyFixedAxesI = dcm * bodyFixedAxesB;
+
+pltXBody = plot3([0, bodyFixedAxesI(1, 1)], [0, bodyFixedAxesI(2, 1)], [0, bodyFixedAxesI(3, 1)], '--r', 'LineWidth', 2);
+pltYBody = plot3([0, bodyFixedAxesI(1, 2)], [0, bodyFixedAxesI(2, 2)], [0, bodyFixedAxesI(3, 2)], '--g', 'LineWidth', 2);
+pltZBody = plot3([0, bodyFixedAxesI(1, 3)], [0, bodyFixedAxesI(2, 3)], [0, bodyFixedAxesI(3, 3)], '--b', 'LineWidth', 2);
+
+
+pltSat = patch('Vertices', verticesPositionsIArray', ...
+    'Faces', linksArray, ...
+    'FaceColor', [0.5 0.5 0.5], ...
+    'EdgeColor', [0.2 0.2 0.2], ...
+    'EdgeAlpha', 0.15);
+
+axisLength = 0.5;
+axis([-axisLength axisLength -axisLength axisLength -axisLength axisLength]);
+
 
 for timeIdx = 1:length(tArrayLocal)
 
-    subplot(2, 2, [1 3]);
-    plotEarth();
-    plot3(stateVectorArrayLocal(1, timeIdx), stateVectorArrayLocal(2, timeIdx), stateVectorArrayLocal(3, timeIdx), 'or', 'MarkerSize', 5);
+    axes(ax1)
+    set(satLocalPositionPlot, 'XData', stateVectorArrayLocal(1, timeIdx), 'YData', stateVectorArrayLocal(2, timeIdx), 'ZData',stateVectorArrayLocal(3, timeIdx));
     xlabel("X, m")
     ylabel("Y, m")
     zlabel("Z, m")
     fontsize(14,"points");
     grid on;
 
-    subplot(2, 2, [2 4]);
-    view([1, 1, 1]);
-    axis off;
-    hold on;
-    pltX = plot3([0, 1/2], [0, 0], [0, 0], 'r', 'LineWidth', 2);
-    pltY = plot3([0, 0], [0, 1/2], [0, 0], 'g', 'LineWidth', 2);
-    pltZ = plot3([0, 0], [0, 0], [0, 1/2], 'b', 'LineWidth', 2);
-
+    axes(ax2)
     dcm = quat2dcm(stateVectorArrayLocal(7:10, timeIdx)');
     dcm = dcm';
     verticesPositionsIArray = dcm * verticesPositionsBArray;
     bodyFixedAxesI = dcm * bodyFixedAxesB;
 
-    pltX = plot3([0, bodyFixedAxesI(1, 1)], [0, bodyFixedAxesI(2, 1)], [0, bodyFixedAxesI(3, 1)], '--r', 'LineWidth', 2);
-    pltY = plot3([0, bodyFixedAxesI(1, 2)], [0, bodyFixedAxesI(2, 2)], [0, bodyFixedAxesI(3, 2)], '--g', 'LineWidth', 2);
-    pltZ = plot3([0, bodyFixedAxesI(1, 3)], [0, bodyFixedAxesI(2, 3)], [0, bodyFixedAxesI(3, 3)], '--b', 'LineWidth', 2);
+    set(pltXBody, 'XData', [0, bodyFixedAxesI(1, 1)], 'YData', [0, bodyFixedAxesI(2, 1)], 'ZData', [0, bodyFixedAxesI(3, 1)]);
+    set(pltYBody, 'XData', [0, bodyFixedAxesI(1, 2)], 'YData', [0, bodyFixedAxesI(2, 2)], 'ZData', [0, bodyFixedAxesI(3, 2)]);
+    set(pltZBody, 'XData', [0, bodyFixedAxesI(1, 3)], 'YData', [0, bodyFixedAxesI(2, 3)], 'ZData', [0, bodyFixedAxesI(3, 3)]);
 
-    pltSat = patch('Vertices', verticesPositionsIArray', ...
-        'Faces', linksArray, ...
-        'FaceColor', [0.5 0.5 0.5], ...
-        'EdgeColor', [0.2 0.2 0.2], ...
-        'EdgeAlpha', 0.15);
-    axis equal;
+    xVertices = verticesPositionsIArray(1, :);
+    yVertices = verticesPositionsIArray(2, :);
+    zVertices = verticesPositionsIArray(3, :);
 
-    pause(0.1);
+    set(pltSat, 'XData', xVertices(linksArray'), 'YData', yVertices(linksArray'), 'ZData', zVertices(linksArray'));
 
-    delete(pltSat);
-    delete(pltX);
-    delete(pltY);
-    delete(pltZ);
+    drawnow;
 
 end
