@@ -1,4 +1,4 @@
-function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp, varargin)
+function stateVectorPrime = rhsOrbitalAngularLander(t, stateVector, controlTorque, spacecraft, planetGp, varargin)
 
     % input:
     % stateVector   [nSats * 13, 1], [m, m/s]
