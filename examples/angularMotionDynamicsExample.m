@@ -48,7 +48,7 @@ controlTorqueArray = [];
 options = odeset('RelTol',1e-10,'AbsTol',1e-10);
 tic;
 [tArrayLocal, stateVectorArrayLocal] = ode45(@(t, stateVector) ...
-             rhsOrbitalAngular(t, stateVector, [0;0;0], spacecraft, Consts.muEarth), [0:T_simulation], stateVectorArray(:, end), options);
+             rhsOrbitalAngularLander(t, stateVector, [0;0;0], spacecraft, Consts.muEarth), [0:T_simulation], stateVectorArray(:, end), options);
 toc;
 stateVectorArrayLocal = stateVectorArrayLocal';
 

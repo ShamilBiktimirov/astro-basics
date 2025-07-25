@@ -1,25 +1,27 @@
-function qwPrime = rhsAngularMotionDynamics(t, X, J, M)
+function qwPrime = rhsAngularMotionDynamics(t, X, J, M_B)
 
-    % X = [q; omega] - angular dynamics state
+    % X = [q; omega] - angular dynamics state, omega is projected to rotating body-fixed frame
     % J - inertia tensor
-    % M - external torque
+    % M_B - external torque, body-fixed frame
 
     qw = X;
 
     intertiaTensorInverse =  inv(J);
 
-    unitQuaternion = qw(1:4) / norm(qw(1:4)); % normalize quaternion
+    % normalizing quaternion to avoid numerical errors, i.e. input quaternion is already supposed to be unit
+    unitQuaternion = qw(1:4) / norm(qw(1:4));
+    omegaB = qw(5:7);
 
-    if isempty(M)
-        M = [0; 0; 0]; % no external torques are applied
-    end 
+    % Poisson equation for rigid body kinematics in case if angular velocity project to body-fixed frame
+    quaternionDot  = 1 / 2 * quatmultiply(unitQuaternion', [0; omegaB]');
 
-    quaternionDot  = 1 / 2 * quatmultiply(unitQuaternion', [0; qw(5:7)]'); % Poisson equation
+    if isempty(M_B)
+        M_B = [0; 0; 0]; % no external torques are applied
+    end
 
-    angularVelocityDot = -intertiaTensorInverse * cross(qw(5:7), J * qw(5:7)) + ...
-                         intertiaTensorInverse * M; % Euler equation
+    angularVelocityDot = -intertiaTensorInverse * cross(omegaB, J * omegaB) + ...
+                         intertiaTensorInverse * M_B; % Euler equation
 
     qwPrime = [quaternionDot'; angularVelocityDot];
-
 
 end
