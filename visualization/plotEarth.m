@@ -169,12 +169,12 @@ function earth3D = plotEarth(varargin)
 
     hold on;
 
-    earth3D = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
+    earthPlot = surf(x, y, -z, 'FaceColor', 'none', 'EdgeColor', 0.5 * [1 1 1]);
 
     % rotate Earth based on time
     hgx = hgtransform;
     set(hgx,'Matrix', makehgtform('zrotate',deg2rad(GAST)));
-    set(earth3D,'Parent',hgx);
+    set(earthPlot,'Parent',hgx);
 
 
     %% Texturemap the globe
@@ -184,7 +184,7 @@ function earth3D = plotEarth(varargin)
 
     % Set image as color data (cdata) property, and set face color to indicate
     % a texturemap, which Matlab expects to be in cdata. Turn off the mesh edges.
-    set(earth3D, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
+    set(earthPlot, 'FaceColor', 'texturemap', 'CData', cdata, 'FaceAlpha', alpha, 'EdgeColor', 'none');
     xlabel('x-axis, m');
     ylabel('y-axis, m');
     zlabel('z-axis, m');
@@ -198,20 +198,20 @@ function earth3D = plotEarth(varargin)
     if umbra == 1
         [eSun, sunAzimuth, sunElev] = sun(time);
         % plot light as sun 
-        light("Style","infinite","Position", eSun * 10000e20);
+        lightPlot = light("Style","infinite","Position", eSun * 10000e20);
         material dull;  % More diffuse lighting
 
         % plot sun vector
-        plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y')
+        sunVecPlot = plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y');
 
     end
 
     if showAxes == 1
         % plot eci frame
         hold on
-        plot3([0 1 * axisLength], [0 0 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'r')
-        plot3([0  0 * axisLength], [0  1 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'g')
-        plot3([0 0 * axisLength], [0 0 * axisLength], [0 1 * axisLength], 'LineWidth', 2, 'Color', 'b')
+        xintPlot = plot3([0 1 * axisLength], [0 0 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'r');
+        yintPlot = plot3([0  0 * axisLength], [0  1 * axisLength], [0 0 * axisLength], 'LineWidth', 2, 'Color', 'g');
+        zintPlot = plot3([0 0 * axisLength], [0 0 * axisLength], [0 1 * axisLength], 'LineWidth', 2, 'Color', 'b');
 
         % plot ecef frame
         xEcef = rotationZ(deg2rad(GAST)) * [1; 0; 0];
@@ -224,5 +224,5 @@ function earth3D = plotEarth(varargin)
 
     end
 
-
+    earth3D = [earthPlot, lightPlot, sunVecPlot, xintPlot, yintPlot, zintPlot, xecefPlot, yecefPlot, zecefPlot];
 end
