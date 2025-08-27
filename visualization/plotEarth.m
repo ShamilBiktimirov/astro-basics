@@ -1,4 +1,4 @@
-function earth3D = plotEarth(varargin)
+function plotsData = plotEarth(varargin)
 
     % The function plots 3D Earth with different options using varargin.
     % It plots spherical Earth with project 2d onto it.
@@ -218,14 +218,27 @@ function earth3D = plotEarth(varargin)
     if umbra == 1
         [eSun, sunAzimuth, sunElev] = sun(time);
         % plot light as sun 
-        light("Style","infinite","Position", eSun * 10000e20);
+        lightPlot = light("Style","infinite","Position", eSun * 10000e20);
         material dull;  % More diffuse lighting
     
         % plot sun vector
         sunVecPlot = plot3([0 eSun(1) * axisLength], [0 eSun(2) * axisLength], [0 eSun(3) * axisLength], 'LineWidth', 2, 'Color', 'y');
-        legend([xeciPlot, xecefPlot, sunVecPlot], 'ECI X-axis', 'ECEF X-axis', 'Sun vector')
-    else
-        legend([xeciPlot, xecefPlot], 'ECI X-axis', 'ECEF X-axis')
     end
 
+        %% outputs
+    if showAxes == 1 &&  umbra == 1
+        plotsData = [earth3D; sunVecPlot; xeciPlot; yeciPlot; zeciPlot; xecefPlot; yecefPlot; zecefPlot; lightPlot];
+        legend([xeciPlot, xecefPlot, sunVecPlot], 'ECI X-axis', 'ECEF X-axis', 'Sun vector')
+
+    elseif showAxes == 1 && umbra == 0
+        plotsData = [earth3D; xeciPlot; yeciPlot; zeciPlot; xecefPlot; yecefPlot; zecefPlot];
+        legend([xeciPlot, xecefPlot], 'ECI X-axis', 'ECEF X-axis', 'Sun vector')
+
+    elseif showAxes == 0 && umbra == 1
+        plotsData = [earth3D; sunVecPlot; lightPlot];
+        legend(sunVecPlot, 'sun vector, ecliptic');
+
+    else
+        plotsData = earth3D;
+    end
 end
