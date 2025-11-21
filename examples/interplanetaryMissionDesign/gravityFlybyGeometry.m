@@ -60,28 +60,28 @@ surface(X/5, ...
         Y/5, ...
         Z/5, FaceColor = [0.65, 0.65, 0.65], FaceAlpha=1, EdgeColor="none");
 
-pltX = quiver3(0,0,0, 2, 0, 0, Color=H(2), LineWidth=2);
-pltY = quiver3(0,0,0, 0, 2, 0, Color=H(5), LineWidth=2);
-pltZ = quiver3(0,0,0, 0, 0, 2, Color=H(1), LineWidth=2);
+pltX = quiver3(0,0,0, 2, 0, 0, Color=H(2), LineWidth=1, ShowArrowHead="off");
+pltY = quiver3(0,0,0, 0, 2, 0, Color=H(5), LineWidth=1, ShowArrowHead="off");
+pltZ = quiver3(0,0,0, 0, 0, 2, Color=H(1), LineWidth=1, ShowArrowHead="off");
 plot3(-2, -2, -2);
 
 pltVInfInbound = quiver3(0,0,0, ...
-                         vInfInbound(1), vInfInbound(2), vInfInbound(3), 'k', LineWidth=2);
+                         vInfInbound(1), vInfInbound(2), vInfInbound(3), 'k', LineWidth=1, ShowArrowHead="off");
 
 node1 = cross(vInfInbound, [0; 0; 1]) / norm(cross(vInfInbound, [0; 0; 1])) * 2; 
 pltNodeBE = quiver3(0,0,0, ...
-                         node1(1), node1(2), node1(3), 'k', LineWidth=2);
+                         node1(1), node1(2), node1(3), 'k', LineWidth=1, ShowArrowHead="off");
 node2 = cross(h, vInfInbound) / norm(cross(h, vInfInbound)) * 2;
-pltNodeBO = quiver3(0,0,0, node2(1), node2(2), node2(3), 'k', LineWidth=2);
+pltNodeBO = quiver3(0,0,0, node2(1), node2(2), node2(3), 'k', LineWidth=1, ShowArrowHead="off");
 
 % axisK = cross(vInfInbound, node1) / norm(cross(vInfInbound, node1)) * 2;, 
 % 
 % pltKaxis = quiver3(0,0,0, axisK(1), axisK(2), axisK(3), 'k', LineWidth=2);
 
-pltTrajectory = plot3(trajHyperbola(1, :), trajHyperbola(2, :), trajHyperbola(3, :),  'k', LineWidth=2);
+pltTrajectory = plot3(trajHyperbola(1, :), trajHyperbola(2, :), trajHyperbola(3, :),  'k', LineWidth=1);
 pltPeriapsis = plot3(trajHyperbola(1, 30), trajHyperbola(2, 30), trajHyperbola(3, 30), LineWidth=2, Marker="o", MarkerFaceColor="k", MarkerEdgeColor="k");
 
-pltAngMomentum = quiver3(0,0,0, h(1), h(2), h(3), 'k', LineWidth=2);
+pltAngMomentum = quiver3(0,0,0, h(1), h(2), h(3), 'k', LineWidth=1, ShowArrowHead="off");
 
 % pltEclPlane = patch('Vertices', planeVertices', 'Faces', [1 2 3 4], ...
 %                     'FaceColor', [0.5 0.5 0.5], ...
