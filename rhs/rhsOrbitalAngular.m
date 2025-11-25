@@ -1,4 +1,6 @@
-function stateVectorPrime = rhsOrbitalAngularLander(t, stateVector, controlTorque, spacecraft, planetGp, varargin)
+function stateVectorPrime = rhsOrbitalAngular(t, stateVector, controlTorque, spacecraft, planetGp, varargin)
+
+    % TODO: revise the function to have particle motion in central gravity field an include control force and torque
 
     % input:
     % stateVector   [nSats * 13, 1], [m, m/s]
