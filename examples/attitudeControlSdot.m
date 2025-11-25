@@ -40,7 +40,7 @@ M_B = [0; 0; 0];
 xVertices = verticesPositionsArray(1, :);
 yVertices = verticesPositionsArray(2, :);
 zVertices = verticesPositionsArray(3, :);
-
+linksArray = linksArray';
 figure;
 axis equal;
 axis off;

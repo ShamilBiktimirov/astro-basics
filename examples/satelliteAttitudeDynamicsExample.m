@@ -31,4 +31,4 @@ X_vec = X_vec';
 q_vec = X_vec(1:4,:);
 
 % visualization
-rotationAnimationGif([l; w; h], q_vec);
+rotationAnimationGif([l; w; h], q_vec, zeros(3, length(q_vec)));
