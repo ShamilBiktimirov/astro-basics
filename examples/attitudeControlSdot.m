@@ -15,6 +15,7 @@ A = m * l3^2 / 12 + m * l2^2 / 12; % Jxx, kg*m^2
 B = m * l3^2 / 12 + m * l1^2 / 12; % Jyy, kg*m^2
 C = 1 / 12 * m * l1^2 + 1 / 12 * m * l2^2; % Jzz, kg*m^2
 J = diag([A, B, C]); % satellite inertia tensor
+Jinv = inv(J);
 
 % initial conditions for angular motion
 q0_I = [1/sqrt(2); 0; 0; 1/sqrt(2)]; % unit quaternion q represents body orientation in inertial reference frame, rad
@@ -59,7 +60,7 @@ view(135, 30);
 while tCounter < simulation.simulationTime
 
     tSpan = tCounter + [0 : simulation.timeStep : simulation.controlLoop]; % s
-    [tArrayLocal, XArrayLocal] = ode45(@(t, X) rhsAngularMotionDynamics(t, X, J, M_B), tSpan, X0, optionsPrecision);
+    [tArrayLocal, XArrayLocal] = ode45(@(t, X) rhsAngularMotionDynamics(t, X, J, Jinv, M_B), tSpan, X0, optionsPrecision);
 
     tArray = [tArray; tArrayLocal];
     XArrayLocal = XArrayLocal';

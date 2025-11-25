@@ -12,6 +12,7 @@ A = m * h^2 / 12 + m * w^2 / 12; % Jxx, kg*m^2
 B = m * h^2 / 12 + m * l^2 / 12; % Jyy, kg*m^2
 C = 1 / 12 * m * l^2 + 1 / 12 * m * w^2; % Jzz, kg*m^2
 J = diag([A, B, C]); % satellite inertia tensor
+Jinv = inv(J);
 
 % initial conditions for angular motion
 q0 = [1; 0; 0; 0]; % unit quaternion q represents body orientation in inertial reference frame, rad
@@ -24,7 +25,7 @@ X_init = [q0; omega0_B]; % state vector for rotational motion dynamics
 
 dt = [0:1:500]; % s
 options_precision = odeset('RelTol',1e-5,'AbsTol',1e-5);
-[t_vec, X_vec] = ode45(@(t, X) rhsAngularMotionDynamics(t, X, J, []), dt, X_init, options_precision);
+[t_vec, X_vec] = ode45(@(t, X) rhsAngularMotionDynamics(t, X, J, Jinv, []), dt, X_init, options_precision);
 X_vec = X_vec';
 
 q_vec = X_vec(1:4,:);
