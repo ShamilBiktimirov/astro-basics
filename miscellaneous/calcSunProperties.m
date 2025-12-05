@@ -1,6 +1,6 @@
-function [angDiameter fluxDensity] = sunAngularFlux(distance)
+function [angDiameter, fluxDensity] = calcSunProperties(distance)
 
-    % this function is to get sun angular resoultion and flux density at
+    % this function is to get sun angular size and flux density at
     % the spacified distance
 
     % inputs:
@@ -15,7 +15,6 @@ function [angDiameter fluxDensity] = sunAngularFlux(distance)
 
 
     % curtis 12.9 Solar radiation pressure
-    SoSun = 63.15e6; % radiated power intensity
-    fluxDensity = SoSun * (Consts.rSun / distance)^2;
+    fluxDensity = Consts.sunRradiatedPowerIntensity * (Consts.rSun / distance)^2; % W/ m^2
 
 end
