@@ -1,4 +1,4 @@
-function qwPrime = rhsAngularMotionDynamics(t, X, J, M_B)
+function qwPrime = rhsAngularMotionDynamics(t, X, J, Jinv, M_B)
 
     % X = [q; omega] - angular dynamics state, omega is projected to rotating body-fixed frame
     % J - inertia tensor
@@ -6,7 +6,7 @@ function qwPrime = rhsAngularMotionDynamics(t, X, J, M_B)
 
     qw = X;
 
-    intertiaTensorInverse =  inv(J);
+    intertiaTensorInverse =  Jinv;
 
     % normalizing quaternion to avoid numerical errors, i.e. input quaternion is already supposed to be unit
     unitQuaternion = qw(1:4) / norm(qw(1:4));
