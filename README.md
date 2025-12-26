@@ -18,29 +18,32 @@ The focus is on **clarity, modularity, and reusability** for academic and applie
 
 ## Repository structure
 
-The codebase is organized by topic-related modules:
-
+```text
 astro-basics/
-- control/ % Control-related utilities
-- coordinateTransformations/ % Frame transforms, DCMs, time/rotation utilities
-- coreInterplanetary/ % Interplanetary mission design helpers
-- orbitDesign/ % Orbit design and secular properties
-- rhs/ % Right-hand-side dynamics models for integration
-- quaternions/ % Quaternion utilities
-- coverageGeometry/ % Coverage and geometric metrics
-- forceTorqueModels/ % Force and torque models
-- visualization/ % Plotting and visualization helpers
-- miscellaneous/ % General-purpose utilities
-- examples/ % Example scripts and demonstrations
-- data/ % Constants and reference data
-- docs/ % Documentation (notation, API reference)
+├─ control/                    # Control-related utilities
+├─ coordinateTransformations/  # Frame transforms, DCMs, time/rotation utilities
+├─ coreInterplanetary/         # Interplanetary mission design helpers
+├─ orbitDesign/                # Orbit design and secular properties
+├─ rhs/                        # Right-hand-side dynamics models for integration
+├─ quaternions/                # Quaternion utilities
+├─ coverageGeometry/           # Coverage and geometric metrics
+├─ forceTorqueModels/          # Force and torque models
+├─ visualization/              # Plotting and visualization helpers
+├─ miscellaneous/              # General-purpose utilities
+├─ examples/                   # Example scripts and demonstrations
+├─ data/                       # Constants and reference data
+├─ docs/                       # Documentation (notation, API reference)
+├─ README.md                   # Project overview
+├─ LICENSE                     # MIT license
+└─ CITATION.cff                # Citation metadata
+```
+
 
 
 ---
 
 ## Installation
 
-### Add to MATLAB path
 Clone or download the repository and add it to your MATLAB path:
 
 ```matlab
@@ -97,9 +100,9 @@ Each function should document its assumptions explicitly.
 
 ## Contributors
 
-This repository is primarily developed and maintained by Shamil Biktimirov.
+This repository is primarily developed and maintained by **Shamil Biktimirov**.
 
-The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, minor enhancements, and feedback by Ms. Fatima Alnaqbi
+The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, enhancements, and feedback by **Ms. Fatima Alnaqbi**
 
 Unless explicitly stated otherwise, contributors are not considered authors of the software for citation purposes.
 
