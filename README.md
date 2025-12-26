@@ -69,23 +69,11 @@ They demonstrate typical use cases such as:
 
 ## Documentation
 
-Additional documentation is provided in the docs/ folder:
-docs/notation.md
+Additional documentation is provided in the docs/ folder: 
+- docs/notation.md
+- docs/matlab_style_guide.md
 
-Reference-frame conventions, DCM notation, quaternion conventions, and units.
-docs/api_reference.md
-
-Function-level API reference grouped by module (auto-generated from code).
 Users are encouraged to consult these documents before extending the toolbox.
-
-
-### Conventions
-
-- Units: SI units are used unless explicitly stated otherwise.
-- Vectors: Column vectors (3×1) are assumed by default.
-- Frames and DCMs:
-  Direction cosine matrices follow the convention
-  $$dcm^{AB}$$ — mapping coordinates from frame B to frame A according to $$r^A = dcm^{AB} \cdot r^B$$
 
 ---
 
