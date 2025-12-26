@@ -87,16 +87,15 @@ Users are encouraged to consult these documents before extending the toolbox.
   Direction cosine matrices follow the convention
   $$dcm^{AB}$$ — mapping coordinates from frame B to frame A according to $$r^A = dcm^{AB} \cdot r^B$$
 
---
+---
 
 ## Contributors
 
 This repository is primarily developed and maintained by **Shamil Biktimirov**.
 
-The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, enhancements, and feedback by **Fatima Alnaqbi**
+The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, enhancements, and feedback by **Fatima Alnaqbi**.
 
 Unless explicitly stated otherwise, contributors are not considered authors of the software for citation purposes.
 
 ## Citation
-If you use this toolbox in academic work, please cite it using the provided
-CITATION.cff file in the repository root.
+If you use this toolbox in academic work, please cite it using the provided CITATION.cff file in the repository root.
