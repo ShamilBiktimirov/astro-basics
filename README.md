@@ -51,7 +51,7 @@ addpath(genpath('<path-to>/astro-basics'));
 savepath;
 ```
 
-Alternatively, place the path addition in your startup.m or a Matlab project file .prj
+Alternatively, place the path addition in your startup.m or a MATLAB project file .prj
 
 ---
 
@@ -59,15 +59,11 @@ Alternatively, place the path addition in your startup.m or a Matlab project fil
 
 Explore the example scripts located in the examples/ folder.
 They demonstrate typical use cases such as:
-- relative motion representations
-- coordinate transformations
-- interplanetary ΔV map generation
+- orbital motion dynamics
+- angular motion dynamics
+- Earth coverage analysis
+- dV map design for an interplanetary transfer
 
-Example:
-```matlab
-cd('<path-to>/astro-basics/examples');
-% run an example script
-```
 
 --- 
 
@@ -87,14 +83,9 @@ Users are encouraged to consult these documents before extending the toolbox.
 
 - Units: SI units are used unless explicitly stated otherwise.
 - Vectors: Column vectors (3×1) are assumed by default.
-
-Frames and DCMs:
-Direction cosine matrices follow the convention
-dcm^AB — mapping coordinates from frame B to frame A according to r^A = dcm^AB \cdot r^B
-
-Quaternions:
-The adopted convention is documented in docs/notation.md.
-Each function should document its assumptions explicitly.
+- Frames and DCMs:
+  Direction cosine matrices follow the convention
+  $$dcm^{AB}$$ — mapping coordinates from frame B to frame A according to $$r^A = dcm^{AB} \cdot r^B$$
 
 --
 
@@ -102,7 +93,7 @@ Each function should document its assumptions explicitly.
 
 This repository is primarily developed and maintained by **Shamil Biktimirov**.
 
-The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, enhancements, and feedback by **Ms. Fatima Alnaqbi**
+The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, enhancements, and feedback by **Fatima Alnaqbi**
 
 Unless explicitly stated otherwise, contributors are not considered authors of the software for citation purposes.
 
