@@ -1,15 +1,16 @@
 # astro-basics
 
 **astro-basics** is a lightweight MATLAB toolbox providing reusable building blocks for
-**astrodynamics and spacecraft dynamics research**.  
+**astrodynamics and spacecraft dynamics&control research**.  
 It is intended as a *research support library*, not a monolithic mission-analysis framework.
 
 The repository collects frequently used utilities for:
-- orbital and relative motion analysis
-- coordinate and reference-frame transformations
-- quaternion and attitude-related computations
-- interplanetary mission design helpers
-- numerical dynamics models and visualization
+- coordinate and reference frame transformations
+- orbital and relative motion dynamics & control
+- rigid body kinematics and dynamics & control
+- coverage analysis and simulation 
+- interplanetary mission design
+- numerical analysis and visualization
 
 The focus is on **clarity, modularity, and reusability** for academic and applied research.
 
@@ -17,7 +18,7 @@ The focus is on **clarity, modularity, and reusability** for academic and applie
 
 ## Repository structure
 
-The codebase is organized by topic-oriented modules:
+The codebase is organized by topic-related modules:
 
 astro-basics/
 - control/ % Control-related utilities
@@ -47,7 +48,7 @@ addpath(genpath('<path-to>/astro-basics'));
 savepath;
 ```
 
-Alternatively, place the path addition in your startup.m.
+Alternatively, place the path addition in your startup.m or a Matlab project file .prj
 
 ---
 
@@ -81,13 +82,12 @@ Users are encouraged to consult these documents before extending the toolbox.
 
 ### Conventions
 
-Units: SI units are used unless explicitly stated otherwise.
-
-Vectors: Column vectors (3×1) are assumed by default.
+- Units: SI units are used unless explicitly stated otherwise.
+- Vectors: Column vectors (3×1) are assumed by default.
 
 Frames and DCMs:
 Direction cosine matrices follow the convention
-C_A_B — mapping coordinates from frame B to frame A.
+dcm^AB — mapping coordinates from frame B to frame A according to r^A = dcm^AB \cdot r^B
 
 Quaternions:
 The adopted convention is documented in docs/notation.md.
