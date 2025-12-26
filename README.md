@@ -99,7 +99,7 @@ Each function should document its assumptions explicitly.
 
 This repository is primarily developed and maintained by Shamil Biktimirov.
 
-The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, minor enhancements, and feedback by Ms. Fatimal Alnaqbi
+The project has also benefited from contributions, discussions, testing, bug fixes, refactoring, minor enhancements, and feedback by Ms. Fatima Alnaqbi
 
 Unless explicitly stated otherwise, contributors are not considered authors of the software for citation purposes.
 
