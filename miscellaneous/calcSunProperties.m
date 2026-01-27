@@ -15,6 +15,6 @@ function [angDiameter, fluxDensity] = calcSunProperties(distance)
 
 
     % curtis 12.9 Solar radiation pressure
-    fluxDensity = Consts.sunRradiatedPowerIntensity * (Consts.rSun / distance)^2; % W/ m^2
+    fluxDensity = Consts.sunSurfaceRadiatedPowerIntensity * (Consts.rSun / distance)^2; % W/ m^2
 
 end

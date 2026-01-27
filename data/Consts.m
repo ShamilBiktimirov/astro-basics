@@ -80,7 +80,7 @@ classdef Consts
         kBoltzmann = 1.38065e-23; % Boltzmann%s constant, unit: m^2 kg s^−2 K^−1
         speedOfLight = 299792458; % speed of light, unit m/s
         temperatureSun = 5778; % Effective blackbody solar temperature, unit: K
-        sunRradiatedPowerIntensity = 63.15e6; % radiated power intensity at sun surface, unit W/m^2
+        sunSurfaceRadiatedPowerIntensity = 63.15e6; % radiated power intensity at sun surface, unit W/m^2, From Curtis, Chapter 12.9, Solar Radiation Pressure
 
 
     end
