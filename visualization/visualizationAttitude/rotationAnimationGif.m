@@ -1,7 +1,7 @@
 function rotationAnimationGif(satDimensions, qArray, targetDirectionArray)
 
     [verticesPositionsArray_B, linksArray] = calcParallelepidedVecticesPositions(satDimensions);
-
+    linksArray = linksArray';
     % just to have a reasonable axis length for visualization
     axisLength = sum(satDimensions) / 3;
     xAxis = [[0; 0; 0], [1; 0; 0]] * axisLength;
