@@ -1,4 +1,4 @@
-function M_B = detumblingControlLaw(omegaRefI, X, J)
+function M_B = sunAcquisitionControlLaw(omegaRefI, X, J)
 
     kOmega = 0.1;
 
