@@ -30,22 +30,25 @@ YMoon = Y * radiusMoon;
 ZMoon = Z * radiusMoon;
 
 
-figure;
-axis equal;
+figure
+set(gcf, 'Color', 'w');
 IdxStep = 1;
-
-xlim([-400e3 400e3]);
-ylim([-400e3 400e3]);
-zlim([-200e3 200e3]);
-view([1, 1, 0]);
+set(gca,'XLimMode','manual','YLimMode','manual','ZLimMode','manual');
 ax.Clipping = 'off';
-axis off;
+% axis off;
+set(gca,'Position',[0.05 0.05 0.9 0.9]);
+view([1, 0, 0]);
 
 for timeIdx = 1:IdxStep:length(tSpan)
 
     pltEarth = plotEarth('time', timeArray_utc_datetime(timeIdx), 'plotUnit', 'km', 'showAxes', 0, 'umbra', 0);
-    pltGateway = plot3(stateGateway(1, timeIdx), stateGateway(2, timeIdx), stateGateway(3, timeIdx), 'or', 'MarkerSize', 2, 'MarkerFaceColor','auto');
+    pltGateway = plot3(stateGateway(1, timeIdx), stateGateway(2, timeIdx), stateGateway(3, timeIdx), 'dr', 'MarkerSize', 4, 'MarkerFaceColor','red');
     pltMoon = surf(XMoon + stateMoon(1, timeIdx), YMoon + stateMoon(2, timeIdx), ZMoon + stateMoon(3, timeIdx));
+    xlim([-450e3 450e3]);
+    ylim([-450e3 450e3]);
+    zlim([-150e3 150e3]);
+    ax.Clipping = 'off';
+    view([1, 0, 1/10]);
 
     drawnow;
 
