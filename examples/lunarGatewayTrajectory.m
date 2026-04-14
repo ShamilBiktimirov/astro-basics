@@ -31,7 +31,7 @@ ZMoon = Z * radiusMoon;
 
 
 figure
-set(gcf, 'Color', 'w');
+set(gcf, 'Color', [128 128 128]/255);
 IdxStep = 1;
 set(gca,'XLimMode','manual','YLimMode','manual','ZLimMode','manual');
 ax.Clipping = 'off';
