@@ -1,4 +1,4 @@
-function M = dcmFeedbackControlLaw(dcmReqI, X, J)
+function [M, qErr,  omegaRel] = dcmFeedbackControlLaw(dcmReqI, X, J)
 
     kOmega = 0.2;
     kS     = 0.01;
@@ -10,6 +10,8 @@ function M = dcmFeedbackControlLaw(dcmReqI, X, J)
     % on direction to the asteroid
     D_BI = quat2dcm(qIB'); % quat2dcm uses passive rotation
     A = D_BI * dcmReqI;
+    qErr = dcm2quat(A');
+    qErr = qErr';
     omegaRel = omegaB - D_BI * omegaRef;
 
     s = [A(2, 3) - A(3, 2); A(3, 1) - A(1, 3); A(1, 2) - A(2, 1)];
