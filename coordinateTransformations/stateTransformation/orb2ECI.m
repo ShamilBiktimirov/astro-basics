@@ -1,8 +1,8 @@
 function rv_chaser_ECI = orb2ECI(rv_target_ECI, rv_chaser_orb)
 
     % h = [r, v] = r^2 * phi'
-    angularMomentumSpecific = norm(cross(rvTargetEci(1:3), rvTargetEci(4:6)));
-    tangentialVelocity = angularMomentumSpecific / norm(rvTargetEci(1:3))^2;
+    angularMomentumSpecific = norm(cross(rv_target_ECI(1:3), rv_target_ECI(4:6)));
+    tangentialVelocity = angularMomentumSpecific / norm(rv_target_ECI(1:3))^2;
 
     % x - along track; y - out-of-plane; z - radial
     rv  = rv_target_ECI;
