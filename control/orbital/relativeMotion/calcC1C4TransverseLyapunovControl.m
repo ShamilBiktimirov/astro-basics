@@ -2,7 +2,7 @@ function controlVectorOrb = calcC1C4TransverseLyapunovControl(rvOrb, meanMotion,
 
     c1 = calcDriftConstant(rvOrb, meanMotion);
     c4 = calcAlongTrackShiftConstant(rvOrb, meanMotion);
-    k1 = 5e-6;
+    k1 = spacecraft.c1c4ControlGain;
 
     if abs(c1) > 0
 
