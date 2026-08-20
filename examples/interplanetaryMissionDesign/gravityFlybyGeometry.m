@@ -106,3 +106,5 @@ pltBPlane = patch('Vertices', BplaneVertices'/1.5, 'Faces', [1 2 3 4], ...
 axis off;
 axis equal;
 % view([1, 1, 1]);
+
+exportgraphics(gcf, 'ga_geometry.pdf', 'Resolution', 600);
