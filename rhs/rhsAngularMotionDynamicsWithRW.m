@@ -1,6 +1,6 @@
 function qwhPrime =  rhsAngularMotionDynamicsWithRW(t, X, J, Jinv, Jrw, Arwa, rwAngAcc)
 
-    % X = [q; omega; rwOmegaDot] - angular dynamics state, omega is projected to rotating body-fixed frame
+    % X = [q; omega; rwOmega] - angular dynamics state, omega is projected to rotating body-fixed frame
     % J - inertia tensor
     % Jinv - inverse matrix of inertia tensor
     % rwAngAcc - angular accelerations of reaction wheels
