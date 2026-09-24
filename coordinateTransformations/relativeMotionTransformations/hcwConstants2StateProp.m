@@ -24,7 +24,7 @@ function rv = hcwConstants2StateProp(hcwConstants, n)
     alpha1 = hcwConstants(5, :);
     alpha2 = hcwConstants(6, :);
 
-    t = 0:0.1:6*pi/n;
+    t = 0:0.1:2*pi/n;
 
     x  = 3 * c1 * n * t + ...
          rho1 .* cos(n*t + alpha1) + ...
